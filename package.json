@@ -1,0 +1,27 @@
+{
+  "name": "biy_daalt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@prisma/client": "^6.15.0",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "graphql": "^16.13.1",
+    "graphql-http": "^1.22.4",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.20.0",
+    "nodemon": "^3.1.14",
+    "prisma": "^6.15.0"
+  }
+}
