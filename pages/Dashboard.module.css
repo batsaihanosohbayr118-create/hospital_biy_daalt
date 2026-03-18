@@ -1,0 +1,59 @@
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.statCard {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.2rem;
+  overflow: hidden;
+  min-height: 120px;
+}
+
+.statGlow {
+  position: absolute;
+  inset: -60% -20% auto;
+  height: 180%;
+  background: radial-gradient(600px 260px at 20% 20%, var(--c), transparent 60%);
+  opacity: .25;
+  pointer-events: none;
+}
+
+.statIcon { font-size: 1.4rem; margin-bottom: .4rem; }
+.statValue { font-size: 1.6rem; font-weight: 700; }
+.statLabel { color: var(--muted); font-size: .85rem; }
+
+.tableCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+.tableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .75rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table th,
+.table td {
+  padding: .85rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.table th { color: var(--muted); font-weight: 600; }
+

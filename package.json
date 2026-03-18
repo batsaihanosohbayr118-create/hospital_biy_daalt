@@ -1,35 +1,40 @@
 {
-  "name": "biy_daalt",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@prisma/client": "^6.15.0",
-    "bcryptjs": "^3.0.3",
-    "dotenv": "^17.3.1",
-    "express": "^5.2.1",
-    "graphql": "^16.13.1",
-    "graphql-http": "^1.22.4",
-    "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.20.0",
-    "nodemon": "^3.1.14",
-    "prisma": "^6.15.0"
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.13.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sumiyabazarn790-byte/hospital_biy_daalt.git"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "bugs": {
-    "url": "https://github.com/sumiyabazarn790-byte/hospital_biy_daalt/issues"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
-  "homepage": "https://github.com/sumiyabazarn790-byte/hospital_biy_daalt#readme"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

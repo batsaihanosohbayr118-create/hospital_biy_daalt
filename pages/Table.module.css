@@ -1,0 +1,31 @@
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .88rem;
+}
+
+.table th,
+.table td {
+  padding: .85rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.table th {
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: .01em;
+  background: rgba(255, 255, 255, .01);
+}
+
+.table tr:hover td {
+  background: rgba(255, 255, 255, .02);
+}
+
+.actions {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
