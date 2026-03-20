@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+﻿import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { query } from '../config/database.js';
 
@@ -13,8 +13,8 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const result = await query(
-      'INSERT INTO users (email, password, role) VALUES (?, ?, ?)',
-      [email, hashedPassword, role]
+      'INSERT INTO users (email, password, role, must_change_password) VALUES (?, ?, ?, ?)',
+      [email, hashedPassword, role, false]
     );
 
     res.status(201).json({
@@ -50,8 +50,33 @@ export const login = async (req, res) => {
     res.json({
       message: 'Амжилттай нэвтэрлээ.',
       token,
-      user: { id: user.id, email: user.email, role: user.role }
+      user: { id: user.id, email: user.email, role: user.role, must_change_password: !!user.must_change_password }
     });
+  } catch (err) {
+    res.status(500).json({ error: 'Серверийн алдаа.', details: err.message });
+  }
+};
+
+export const getMe = async (req, res) => {
+  try {
+    const rows = await query('SELECT id, email, role, must_change_password FROM users WHERE id = ? LIMIT 1', [req.user.id]);
+    if (rows.length === 0) return res.json({ user: null });
+    const user = rows[0];
+    res.json({ user: { id: user.id, email: user.email, role: user.role, must_change_password: !!user.must_change_password } });
+  } catch (err) {
+    res.status(500).json({ error: 'Серверийн алдаа.', details: err.message });
+  }
+};
+
+export const changePassword = async (req, res) => {
+  try {
+    const { new_password } = req.body;
+    if (!new_password || String(new_password).length < 6) {
+      return res.status(400).json({ error: 'Нууц үг бага дорх 6 тэмдэгт байна.' });
+    }
+    const hashedPassword = await bcrypt.hash(new_password, 10);
+    await query('UPDATE users SET password = ?, must_change_password = ? WHERE id = ?', [hashedPassword, false, req.user.id]);
+    res.json({ message: 'Нууц үг шинэчлэгдлээ.' });
   } catch (err) {
     res.status(500).json({ error: 'Серверийн алдаа.', details: err.message });
   }

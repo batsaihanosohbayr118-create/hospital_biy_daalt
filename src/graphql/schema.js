@@ -21,6 +21,8 @@ export const schema = buildSchema(`
     last_name: String!
     specialization: String!
     phone: String
+    room_number: String
+    position_title: String
     available_days: String
     appointments: [Appointment]
   }

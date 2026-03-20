@@ -58,10 +58,20 @@ export const getPatientMedicalRecords = async (req, res) => {
     const { role } = req.user;
 
     let sql = `
-      SELECT mr.id, mr.diagnosis, mr.treatment, mr.record_date, mr.is_confidential,
-             d.first_name AS doctor_first, d.last_name AS doctor_last
+      SELECT mr.id,
+             mr.diagnosis,
+             mr.treatment,
+             mr.test_results,
+             mr.record_date,
+             mr.is_confidential,
+             p.first_name AS patient_first,
+             p.last_name AS patient_last,
+             p.registry_number AS registry_number,
+             d.first_name AS doctor_first,
+             d.last_name AS doctor_last
       FROM medical_records mr
       JOIN doctors d ON mr.doctor_id = d.id
+      JOIN patients p ON mr.patient_id = p.id
       WHERE mr.patient_id = ?
     `;
 
@@ -72,7 +82,18 @@ export const getPatientMedicalRecords = async (req, res) => {
     sql += ' ORDER BY mr.record_date DESC';
 
     const records = await query(sql, [patientId]);
-    res.json({ total: records.length, records });
+
+    const formatted = records.map(r => ({
+      ...r,
+      status: r.is_confidential ? 'Нууц' : 'Ил',
+      report_status: r.is_confidential ? 'Нууц' : 'Ил',
+      final_diagnosis: r.treatment || r.diagnosis || '',
+      symptom: r.treatment || '',
+      tests: r.test_results || '',
+      patient_name: `${r.patient_first || ''} ${r.patient_last || ''}`.trim()
+    }));
+
+    res.json({ total: formatted.length, records: formatted });
   } catch (err) {
     res.status(500).json({ error: 'Серверийн алдаа.', details: err.message });
   }
