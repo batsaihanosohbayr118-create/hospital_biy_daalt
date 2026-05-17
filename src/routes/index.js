@@ -39,7 +39,7 @@ import { getDashboardStats } from '../controllers/dashboardController.js';
 import { authenticate, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
-const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:3001').replace(/\/$/, '');
+const frontendUrl = (process.env.FRONTEND_URL || 'https://hospitalbiydaalt.vercel.app').replace(/\/$/, '');
 
 router.post('/auth/register', register);
 router.post('/auth/login', login);
