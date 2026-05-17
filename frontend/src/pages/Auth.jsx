@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '../api';
+import api, { API_ORIGIN } from '../api';
 import { useAuth } from '../AuthContext';
 import { useToast } from '../ToastContext';
 import { Select } from '../components/UI';
@@ -163,7 +163,7 @@ export default function Auth() {
 
             {/* Google */}
             <a
-              href="http://localhost:3000/api/auth/google"
+              href={`${API_ORIGIN}/api/auth/google`}
               className={styles.googleBtn}
             >
               <svg width="18" height="18" viewBox="0 0 48 48">
