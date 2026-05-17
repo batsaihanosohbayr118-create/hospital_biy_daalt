@@ -235,9 +235,9 @@
 
 .selectMenu {
   position: absolute;
-  z-index: 1300;
+  z-index: 5000;
   left: 0;
-  right: 0;
+  right: auto;
   top: calc(100% + .35rem);
   max-height: 230px;
   overflow: auto;

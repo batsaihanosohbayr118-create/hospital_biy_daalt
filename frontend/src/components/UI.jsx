@@ -1,4 +1,5 @@
-import { Children, isValidElement, useEffect, useMemo, useRef, useState } from 'react';
+import { Children, isValidElement, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import styles from './UI.module.css';
 
 export function PageHeader({ title, subtitle, children }) {
@@ -119,7 +120,9 @@ export function PasswordInput({ className = '', ...props }) {
 
 export function Select({ className = '', value = '', onChange, children, disabled = false, ...props }) {
   const [open, setOpen] = useState(false);
+  const [menuStyle, setMenuStyle] = useState(null);
   const wrapRef = useRef(null);
+  const menuRef = useRef(null);
   const options = useMemo(() => (
     Children.toArray(children)
       .filter(isValidElement)
@@ -133,11 +136,49 @@ export function Select({ className = '', value = '', onChange, children, disable
 
   useEffect(() => {
     const close = e => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
+      if (
+        wrapRef.current &&
+        !wrapRef.current.contains(e.target) &&
+        menuRef.current &&
+        !menuRef.current.contains(e.target)
+      ) {
+        setOpen(false);
+      }
     };
     document.addEventListener('mousedown', close);
     return () => document.removeEventListener('mousedown', close);
   }, []);
+
+  useLayoutEffect(() => {
+    if (!open || !wrapRef.current) return;
+
+    const positionMenu = () => {
+      const rect = wrapRef.current.getBoundingClientRect();
+      const gap = 6;
+      const viewportPadding = 10;
+      const spaceBelow = window.innerHeight - rect.bottom - viewportPadding;
+      const spaceAbove = rect.top - viewportPadding;
+      const openUp = spaceBelow < 160 && spaceAbove > spaceBelow;
+      const maxHeight = Math.max(120, Math.min(260, openUp ? spaceAbove - gap : spaceBelow - gap));
+
+      setMenuStyle({
+        position: 'fixed',
+        left: `${rect.left}px`,
+        top: openUp ? 'auto' : `${rect.bottom + gap}px`,
+        bottom: openUp ? `${window.innerHeight - rect.top + gap}px` : 'auto',
+        width: `${rect.width}px`,
+        maxHeight: `${maxHeight}px`
+      });
+    };
+
+    positionMenu();
+    window.addEventListener('resize', positionMenu);
+    window.addEventListener('scroll', positionMenu, true);
+    return () => {
+      window.removeEventListener('resize', positionMenu);
+      window.removeEventListener('scroll', positionMenu, true);
+    };
+  }, [open]);
 
   const choose = opt => {
     if (opt.disabled) return;
@@ -156,8 +197,8 @@ export function Select({ className = '', value = '', onChange, children, disable
         <span className={styles.selectText}>{selected?.label || 'Сонгох'}</span>
         <span className={styles.selectChevron} aria-hidden="true" />
       </button>
-      {open && !disabled && (
-        <div className={styles.selectMenu}>
+      {open && !disabled && createPortal(
+        <div ref={menuRef} className={styles.selectMenu} style={menuStyle || undefined}>
           {options.map(opt => (
             <button
               key={String(opt.value)}
@@ -169,7 +210,8 @@ export function Select({ className = '', value = '', onChange, children, disable
               {opt.label}
             </button>
           ))}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
