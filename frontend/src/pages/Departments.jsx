@@ -105,6 +105,14 @@ const EmergencyIcon = () => (
   </svg>
 );
 
+const DoctorIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="7" r="3.2" />
+    <path d="M5.5 20a6.5 6.5 0 0 1 13 0" />
+    <path d="M9 13.2 12 17l3-3.8" />
+  </svg>
+);
+
 const InternalIcon = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true">
     <path d="M8.8 4.5c-1.9 2.1-2.8 4.6-2.8 7.4 0 3.9 2.2 7.1 5.2 7.1" />
@@ -397,7 +405,7 @@ export default function Departments() {
                   {doctor.profile_image_url ? (
                     <img src={doctor.profile_image_url} alt={`${doctor.first_name} ${doctor.last_name}`} className={styles.doctorPhoto} />
                   ) : (
-                    <div className={styles.doctorAvatar}>{(doctor.first_name?.[0] || 'Э').toUpperCase()}</div>
+                    <div className={styles.doctorAvatar}><DoctorIcon /></div>
                   )}
                   <div className={styles.doctorInfo}>
                     <h4>{doctor.first_name} {doctor.last_name}</h4>
