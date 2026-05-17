@@ -35,13 +35,35 @@ const ensureDepartmentsTable = async () => {
   }
 };
 
+const makeUsernameBase = (email) => {
+  const base = String(email || '')
+    .split('@')[0]
+    .toLowerCase()
+    .replace(/[^a-z0-9_]/g, '')
+    .slice(0, 42);
+  return base || `doctor${Date.now()}`;
+};
+
+const makeUniqueUsername = async (email) => {
+  const base = makeUsernameBase(email);
+  let candidate = base;
+  let suffix = 1;
+
+  while (true) {
+    const rows = await query('SELECT id FROM User WHERE username = ? LIMIT 1', [candidate]);
+    if (rows.length === 0) return candidate;
+    suffix += 1;
+    candidate = `${base}${suffix}`.slice(0, 50);
+  }
+};
+
 export const getAllDoctors = async (req, res) => {
   try {
     const doctors = await query(`
       SELECT d.id, d.user_id, d.first_name, d.last_name, d.specialization,
              d.phone, d.room_number, d.position_title,
              d.available_days, d.license_number, d.profile_image_url,
-             d.experience_years, u.email
+             d.experience_years, u.email, u.username
       FROM Doctor d
       JOIN User u ON d.user_id = u.id
       ORDER BY d.specialization
@@ -304,9 +326,11 @@ export const createDoctor = async (req, res) => {
       ? String(password)
       : `Doc${Math.random().toString(36).slice(2,6)}!${Math.floor(Math.random() * 90 + 10)}`;
     const hashedPassword = await bcrypt.hash(tempPassword, 10);
+    const username = await makeUniqueUsername(email);
+    const mustChangePassword = !(password && String(password).length > 0);
     const userRes = await query(
-      'INSERT INTO User (email, password, role, must_change_password) VALUES (?, ?, ?, ?)',
-      [email, hashedPassword, 'doctor', true]
+      'INSERT INTO User (email, username, password, role, must_change_password) VALUES (?, ?, ?, ?, ?)',
+      [email, username, hashedPassword, 'doctor', mustChangePassword]
     );
 
     let result;
@@ -332,7 +356,16 @@ export const createDoctor = async (req, res) => {
       throw e;
     }
 
-    res.status(201).json({ message: 'Эмч амжилттай бүртгэгдлээ.', doctorId: result.insertId, tempPassword });
+    res.status(201).json({
+      message: 'Эмч амжилттай бүртгэгдлээ.',
+      doctorId: result.insertId,
+      tempPassword,
+      credentials: {
+        email,
+        username,
+        password: tempPassword
+      }
+    });
   } catch (err) {
     res.status(500).json({ error: 'Серверийн алдаа.', details: err.message });
   }
@@ -428,7 +461,7 @@ export const updateDoctorPassword = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await query('UPDATE User SET password = ?, must_change_password = ? WHERE id = ?', [hashedPassword, true, rows[0].user_id]);
+    await query('UPDATE User SET password = ?, must_change_password = ? WHERE id = ?', [hashedPassword, false, rows[0].user_id]);
     res.json({ message: 'Нууц үг амжилттай шинэчлэгдлээ.' });
   } catch (err) {
     res.status(500).json({ error: 'Серверийн алдаа.', details: err.message });

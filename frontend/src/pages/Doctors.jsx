@@ -45,6 +45,7 @@ export default function Doctors() {
   const [pwdModal, setPwdModal] = useState(false);
   const [pwdDoctor, setPwdDoctor] = useState(null);
   const [deleteDoctor, setDeleteDoctor] = useState(null);
+  const [createdCredentials, setCreatedCredentials] = useState(null);
   const [pwdValue, setPwdValue] = useState('');
   const [autoPassword, setAutoPassword] = useState(true);
   const [form, setForm] = useState({ first_name: '', last_name: '', specialization: '', phone: '', available_days: '', profile_image_url: '', experience_years: '', room_number: '', position_title: '', email: '', password: '' });
@@ -105,9 +106,11 @@ export default function Doctors() {
         if (autoPassword) delete payload.password;
         const { data } = await api.post('/doctors', payload);
         toast('Эмч амжилттай нэмэгдлээ!');
-        if (data?.tempPassword) {
-          toast(`Түр нууц үг: ${data.tempPassword}`);
-        }
+        setCreatedCredentials(data?.credentials || {
+          email: form.email,
+          username: data?.username || '',
+          password: data?.tempPassword || form.password
+        });
       }
       setModal(false);
       setEditingId(null);
@@ -175,7 +178,7 @@ export default function Doctors() {
       <SearchBar className={styles.doctorSearchBar}>
         <SearchInput placeholder="Хайх эмчийн нэрээ оруулна уу..." onChange={filter} />
         {isAdmin && (
-          <Btn className={`${styles.addBtn} ${styles.doctorAddBtn}`} onClick={() => { setEditingId(null); setAutoPassword(true); setModal(true); }}>
+          <Btn className={`${styles.addBtn} ${styles.doctorAddBtn}`} onClick={() => { setEditingId(null); setAutoPassword(true); setCreatedCredentials(null); setModal(true); }}>
             <span className={styles.addFull}>＋ Эмч нэмэх</span>
             <span className={styles.addShort}>＋ Нэмэх</span>
           </Btn>
@@ -328,6 +331,27 @@ export default function Doctors() {
           <ModalFooter>
             <Btn variant="outline" onClick={() => setDeleteDoctor(null)}>Болих</Btn>
             <Btn variant="danger" onClick={remove}>Устгах</Btn>
+          </ModalFooter>
+        </Modal>
+      )}
+
+      {isAdmin && (
+        <Modal open={!!createdCredentials} onClose={() => setCreatedCredentials(null)} title="Эмчийн нэвтрэх мэдээлэл">
+          <div className={styles.credentialsBox}>
+            <p className={styles.credentialsNote}>
+              Энэ мэдээллээр эмч шууд системд нэвтэрнэ. Нууц үгийг хаахаас өмнө эмчид дамжуулаарай.
+            </p>
+            <div className={styles.credentialsGrid}>
+              <span>Имэйл</span>
+              <strong>{createdCredentials?.email || '—'}</strong>
+              <span>Нэвтрэх нэр</span>
+              <strong>{createdCredentials?.username || createdCredentials?.email || '—'}</strong>
+              <span>Нууц үг</span>
+              <strong>{createdCredentials?.password || '—'}</strong>
+            </div>
+          </div>
+          <ModalFooter>
+            <Btn onClick={() => setCreatedCredentials(null)}>Ойлголоо</Btn>
           </ModalFooter>
         </Modal>
       )}

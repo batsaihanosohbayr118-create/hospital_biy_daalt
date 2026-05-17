@@ -122,7 +122,7 @@ export const changePassword = async (req, res) => {
       return res.status(400).json({ error: 'Нууц үг бага дорх 6 тэмдэгт байна.' });
     }
     const hashedPassword = await bcrypt.hash(new_password, 10);
-    await query('UPDATE User SET password = ? WHERE id = ?', [hashedPassword, req.user.id]);
+    await query('UPDATE User SET password = ?, must_change_password = ? WHERE id = ?', [hashedPassword, false, req.user.id]);
     res.json({ message: 'Нууц үг шинэчлэгдлээ.' });
   } catch (err) {
     res.status(500).json({ error: 'Серверийн алдаа.', details: err.message });

@@ -493,6 +493,38 @@
   font-size: .92rem;
 }
 
+.credentialsBox {
+  display: grid;
+  gap: .9rem;
+}
+
+.credentialsNote {
+  margin: 0;
+  color: var(--muted);
+  font-size: .92rem;
+  line-height: 1.45;
+}
+
+.credentialsGrid {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: .55rem .8rem;
+  padding: .85rem;
+  border-radius: 12px;
+  background: var(--surface2);
+}
+
+.credentialsGrid span {
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+.credentialsGrid strong {
+  color: var(--text);
+  font-size: .9rem;
+  overflow-wrap: anywhere;
+}
+
 .addBtn {
   box-shadow: none;
 }
