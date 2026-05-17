@@ -1,0 +1,60 @@
+.sidebar {
+  width: 240px; min-height: 100vh;
+  background: linear-gradient(180deg, #ffffff 0%, var(--sidebar) 100%);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  padding: 1.5rem 1rem;
+  position: fixed; left: 0; top: 0; bottom: 0;
+  z-index: 100;
+  box-shadow: 8px 0 28px rgba(31, 91, 124, .07);
+}
+.logo { display: flex; align-items: center; gap: .65rem; margin-bottom: 2.5rem; padding: 0 .5rem; }
+.logoIcon {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+  box-shadow: 0 10px 20px rgba(15, 183, 167, .20);
+}
+.logoText { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: #17466e; }
+
+.nav { display: flex; flex-direction: column; gap: .25rem; }
+.navItem {
+  display: flex; align-items: center; gap: .7rem;
+  padding: .65rem .85rem; border-radius: 10px;
+  cursor: pointer; background: none; border: none;
+  color: var(--muted); font-size: .875rem; font-weight: 500;
+  font-family: 'Manrope', sans-serif;
+  text-align: left; width: 100%;
+  transition: all .15s;
+}
+.navItem:hover { background: rgba(255,255,255,.76); color: var(--text); }
+.navItem.active {
+  background: linear-gradient(135deg, rgba(15,183,167,.15), rgba(47,115,255,.10));
+  color: #087c72;
+  box-shadow: inset 0 0 0 1px rgba(15, 183, 167, .18);
+}
+.navIcon { font-size: 1.05rem; width: 22px; text-align: center; }
+
+.footer { margin-top: auto; border-top: 1px solid var(--border); padding-top: 1rem; }
+.userBadge {
+  display: flex; align-items: center; gap: .7rem;
+  padding: .65rem .85rem; border-radius: 10px;
+  background: rgba(255,255,255,.78); margin-bottom: .5rem;
+  border: 1px solid rgba(216,232,240,.78);
+}
+.avatar {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: .85rem; font-weight: 800; color: #ffffff;
+}
+.userInfo { overflow: hidden; }
+.userEmail { font-size: .78rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.logoutBtn {
+  width: 100%; padding: .55rem; background: #ffffff;
+  border: 1px solid var(--border); border-radius: 9px;
+  color: var(--text); cursor: pointer;
+  font-size: .82rem; font-family: 'Manrope', sans-serif;
+  transition: all .2s;
+}
+.logoutBtn:hover { border-color: var(--danger); color: var(--danger); }

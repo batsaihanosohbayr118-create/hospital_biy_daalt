@@ -1,70 +1,258 @@
-# Getting Started with Create React App
+# Hospital Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project description
 
-## Available Scripts
+Энэхүү project нь эмнэлгийн өдөр тутмын үйл ажиллагааг удирдах web систем юм. Өвчтөн цаг захиалах, эмч цагийн хуваариа харах, жор бичих, өвчтөн өөрийн жороо харах/хэвлэх, admin эмч болон өвчтөний мэдээллийг удирдах боломжтой.
 
-In the project directory, you can run:
+## Ашигласан технологи
 
-### `npm start`
+### Frontend
+- React
+- React Scripts / Create React App
+- Axios
+- CSS Modules
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Backend
+- Node.js
+- Express.js
+- MySQL
+- mysql2
+- JWT authentication
+- Passport Google OAuth
+- Prisma schema/migration
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Project бүтэц
 
-### `npm test`
+```text
+hospital_biy_daalt/
+├─ frontend/          React frontend
+├─ src/               Express backend
+│  ├─ controllers/
+│  ├─ routes/
+│  ├─ middleware/
+│  ├─ config/
+│  └─ prisma/
+└─ README.md
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Install хийх
 
-### `npm run build`
+### 1. Backend dependencies
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+cd src
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 2. Frontend dependencies
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+cd frontend
+npm install
+```
 
-### `npm run eject`
+## Database тохиргоо
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+MySQL дээр database үүсгэнэ.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```sql
+CREATE DATABASE hospital_db;
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Backend-ийн `src/.env` файлд дараах тохиргоог хийнэ.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```env
+PORT=3000
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=hospital_db
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=7d
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+DATABASE_URL="mysql://root:your_password@localhost:3306/hospital_db"
+```
 
-## Learn More
+Prisma migration ашиглах бол:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+cd src
+npx prisma migrate dev
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Ажиллуулах command
 
-### Code Splitting
+### Backend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+cd src
+npm run dev
+```
 
-### Analyzing the Bundle Size
+Backend default URL:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```text
+http://localhost:3000
+```
 
-### Making a Progressive Web App
+### Frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Backend `3000` port ашиглаж байгаа тул frontend-ийг `3001` дээр асаах нь тохиромжтой.
 
-### Advanced Configuration
+Windows PowerShell:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```powershell
+cd frontend
+$env:PORT=3001
+npm start
+```
 
-### Deployment
+Frontend URL:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```text
+http://localhost:3001
+```
 
-### `npm run build` fails to minify
+## Гол features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Role-based login: admin, doctor, patient
+- Email/username + password login
+- Google OAuth login
+- Admin dashboard statistics
+  - Нийт өвчтөн
+  - Нийт эмч
+  - Өнөөдрийн цаг захиалга
+  - Хүлээгдэж буй цаг
+  - Сүүлийн жорууд
+- Өвчтөн бүртгэл, засвар
+- Эмч нэмэх, засах, устгах
+- Эмчийн нууц үг шинэчлэх
+- Өвчтөн цаг захиалах
+- Сонгосон эмчийн завгүй цагууд disabled харагдах
+- Давхардсан цаг дээр шууд анхааруулга харуулах
+- Эмч өвчтөний үзлэгийн бичлэг оруулах
+- Эмч жор бичих
+- Өвчтөн өөрийн жороо харах
+- Жор хэвлэх болон Save as PDF хийх
+- Өвчтөн өөрийн профайл засах
+  - нэр
+  - утас
+  - төрсөн огноо
+  - хаяг
+- Эмч өөрийн профайл засах
+  - өрөө
+  - ажлын өдөр
+  - туршлага
+
+## API endpoint-ууд
+
+### Auth
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+GET  /api/auth/google
+GET  /api/auth/google/callback
+```
+
+### Dashboard
+
+```text
+GET /api/dashboard/stats
+```
+
+### Patients
+
+```text
+GET /api/patients
+GET /api/patients/me
+PUT /api/patients/me
+GET /api/patients/:id
+POST /api/patients
+PUT /api/patients/:id
+```
+
+### Doctors
+
+```text
+GET    /api/doctors
+GET    /api/doctors/me
+PUT    /api/doctors/me
+GET    /api/doctors/:id
+POST   /api/doctors
+PUT    /api/doctors/:id
+DELETE /api/doctors/:id
+PUT    /api/doctors/:id/password
+```
+
+### Appointments
+
+```text
+POST   /api/appointments
+GET    /api/appointments
+GET    /api/appointments/me
+GET    /api/appointments/doctor/:doctorId?date=YYYY-MM-DD
+PUT    /api/appointments/:id/status
+DELETE /api/appointments/:id
+```
+
+### Prescriptions
+
+```text
+POST /api/prescriptions
+GET  /api/prescriptions
+GET  /api/prescriptions/me
+GET  /api/prescriptions/patient/:patientId
+```
+
+### Medical Records
+
+```text
+POST /api/medical-records
+GET  /api/medical-records/patient/:patientId
+```
+
+## Screenshot-ууд
+
+Screenshot зургаа `docs/screenshots/` хавтсанд байрлуулаад доорх нэрээр хадгалж болно.
+
+| Дэлгэц | Файл |
+| --- | --- |
+| Нэвтрэх / бүртгүүлэх | `docs/screenshots/auth.png` |
+| Admin dashboard | `docs/screenshots/dashboard.png` |
+| Эмчийн жагсаалт | `docs/screenshots/doctors.png` |
+| Цаг захиалга | `docs/screenshots/appointments.png` |
+| Жор / хэвлэх | `docs/screenshots/prescriptions.png` |
+| Профайл засах | `docs/screenshots/profile.png` |
+
+```markdown
+![Auth](docs/screenshots/auth.png)
+![Dashboard](docs/screenshots/dashboard.png)
+![Appointments](docs/screenshots/appointments.png)
+![Prescriptions](docs/screenshots/prescriptions.png)
+![Profile](docs/screenshots/profile.png)
+```
+
+## Build шалгах
+
+Frontend production build:
+
+```bash
+cd frontend
+npm run build
+```
+
+Backend syntax шалгах:
+
+```bash
+cd src
+node --check app.js
+```
+
+## Тайлбар
+
+- `.env`, `node_modules`, `build`, log файлууд git-д орохгүй.
+- Facebook login устгагдсан.
+- Google login ашиглах бол Google Cloud Console дээр redirect URI-г `http://localhost:3000/api/auth/google/callback` гэж тохируулна.

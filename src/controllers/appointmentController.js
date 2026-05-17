@@ -3,7 +3,7 @@
 export const createAppointment = async (req, res) => {
   try {
     const { doctor_id, appointment_date, notes } = req.body;
-    const patientRow = await query('SELECT id FROM patients WHERE user_id = ? LIMIT 1', [req.user.id]);
+    const patientRow = await query('SELECT id FROM Patient WHERE user_id = ? LIMIT 1', [req.user.id]);
     if (patientRow.length === 0) {
       return res.status(400).json({ error: 'Өвчтөний профайл үүсээгүй байна.' });
     }
@@ -29,7 +29,7 @@ export const createAppointment = async (req, res) => {
       return res.status(400).json({ error: 'Цаг нь 30 минутын интервалтай, 08:30–17:00 хооронд байх ёстой.' });
     }
     const conflict = await query(`
-      SELECT id FROM appointments
+      SELECT id FROM Appointment
       WHERE doctor_id = ? AND appointment_date = ? AND status != 'cancelled'
     `, [doctor_id, appointment_date]);
 
@@ -38,7 +38,7 @@ export const createAppointment = async (req, res) => {
     }
 
     const result = await query(`
-      INSERT INTO appointments (patient_id, doctor_id, appointment_date, notes)
+      INSERT INTO Appointment (patient_id, doctor_id, appointment_date, notes)
       VALUES (?, ?, ?, ?)
     `, [patient_id, doctor_id, appointment_date, notes]);
 
@@ -59,9 +59,9 @@ export const getAllAppointments = async (req, res) => {
              p.id AS patient_id, p.first_name AS patient_first, p.last_name AS patient_last, p.phone AS patient_phone,
              d.id AS doctor_id, d.first_name AS doctor_first, d.last_name AS doctor_last, d.room_number,
              d.specialization
-      FROM appointments a
-      JOIN patients p ON a.patient_id = p.id
-      JOIN doctors d ON a.doctor_id = d.id
+      FROM Appointment a
+      JOIN Patient p ON a.patient_id = p.id
+      JOIN Doctor d ON a.doctor_id = d.id
       WHERE 1=1
     `;
     const params = [];
@@ -88,7 +88,7 @@ export const getDoctorBookedSlots = async (req, res) => {
     }
     const rows = await query(`
       SELECT TIME(a.appointment_date) AS time
-      FROM appointments a
+      FROM Appointment a
       WHERE a.doctor_id = ? AND DATE(a.appointment_date) = ? AND a.status != 'cancelled'
     `, [doctorId, date]);
 
@@ -106,9 +106,9 @@ export const getMyAppointments = async (req, res) => {
              p.id AS patient_id, p.first_name AS patient_first, p.last_name AS patient_last, p.phone AS patient_phone,
              d.id AS doctor_id, d.first_name AS doctor_first, d.last_name AS doctor_last, d.room_number,
              d.specialization
-      FROM appointments a
-      JOIN patients p ON a.patient_id = p.id
-      JOIN doctors d ON a.doctor_id = d.id
+      FROM Appointment a
+      JOIN Patient p ON a.patient_id = p.id
+      JOIN Doctor d ON a.doctor_id = d.id
       WHERE p.user_id = ?
       ORDER BY a.appointment_date DESC
     `, [req.user.id]);
@@ -129,7 +129,7 @@ export const updateAppointmentStatus = async (req, res) => {
       return res.status(400).json({ error: 'Буруу статус.' });
     }
 
-    await query('UPDATE appointments SET status = ? WHERE id = ?', [status, id]);
+    await query('UPDATE Appointment SET status = ? WHERE id = ?', [status, id]);
     res.json({ message: `Цагийн статус "${status}" болж өөрчлөгдлөө.` });
   } catch (err) {
     res.status(500).json({ error: 'Серверийн алдаа.', details: err.message });
@@ -140,14 +140,14 @@ export const cancelAppointment = async (req, res) => {
   try {
     const { id } = req.params;
     const own = await query(`
-      SELECT a.id FROM appointments a
-      JOIN patients p ON a.patient_id = p.id
+      SELECT a.id FROM Appointment a
+      JOIN Patient p ON a.patient_id = p.id
       WHERE a.id = ? AND p.user_id = ?
     `, [id, req.user.id]);
     if (own.length === 0) {
       return res.status(403).json({ error: 'Зөвшөөрөлгүй.' });
     }
-    await query('UPDATE appointments SET status = "cancelled" WHERE id = ?', [id]);
+    await query('UPDATE Appointment SET status = "cancelled" WHERE id = ?', [id]);
     res.json({ message: 'Цаг цуцлагдлаа.' });
   } catch (err) {
     res.status(500).json({ error: 'Серверийн алдаа.', details: err.message });

@@ -1,0 +1,608 @@
+.searchWrap {
+  position: relative;
+  max-width: 420px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .85rem;
+  margin-bottom: 1rem;
+}
+
+.searchWrap svg {
+  position: absolute;
+  left: .9rem;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.searchWrap input {
+  width: 100%;
+  min-height: 46px;
+  padding: .7rem .95rem .7rem 2.7rem;
+  border: 1px solid color-mix(in srgb, var(--accent2) 16%, var(--border));
+  border-radius: 14px;
+  background: var(--surface2);
+  color: var(--text);
+  font-family: Manrope, sans-serif;
+  font-size: .92rem;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.searchWrap input:focus {
+  border-color: color-mix(in srgb, var(--accent2) 50%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent2) 14%, transparent);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.controls button,
+.adminBar button,
+.cardActions button,
+.editRow button {
+  min-height: 38px;
+  border: 1px solid color-mix(in srgb, var(--accent2) 18%, var(--border));
+  border-radius: 12px;
+  background: var(--surface2);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: Manrope, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.controls button {
+  padding: 0 .8rem;
+  font-size: .9rem;
+}
+
+.controls .controlActive {
+  border-color: transparent;
+  background: linear-gradient(135deg, #27d7c2, #70a8ff);
+  color: #03111d;
+  box-shadow: 0 10px 22px rgba(112, 168, 255, .20);
+}
+
+.sortSelect {
+  position: relative;
+  min-width: 150px;
+}
+
+.sortButton {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 .7rem 0 .85rem;
+  border: 1px solid color-mix(in srgb, var(--accent2) 18%, var(--border));
+  border-radius: 12px;
+  background: var(--surface2);
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  cursor: pointer;
+  font-family: Manrope, sans-serif;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  transition: border-color .2s ease, box-shadow .2s ease, color .18s ease, background .18s ease;
+}
+
+.sortButton:hover,
+.sortButton:focus {
+  border-color: color-mix(in srgb, var(--accent2) 48%, var(--border));
+  background: color-mix(in srgb, var(--accent2) 8%, var(--surface2));
+  color: var(--text);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--accent2) 12%, transparent);
+  outline: none;
+}
+
+.sortChevron {
+  color: currentColor;
+  font-size: 1rem;
+  line-height: 1;
+  transition: transform .18s ease;
+}
+
+.sortChevronOpen {
+  transform: rotate(180deg);
+}
+
+.sortMenu {
+  position: absolute;
+  top: calc(100% + .4rem);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  padding: .25rem 0;
+  border: 0;
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 18px 38px rgba(31, 91, 124, .16);
+  overflow: hidden;
+}
+
+.sortMenu .sortOption {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 .9rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: Manrope, sans-serif;
+  font-size: .88rem;
+  font-weight: 700;
+  text-align: left;
+  box-shadow: none;
+}
+
+.sortMenu .sortOption:hover {
+  background: color-mix(in srgb, var(--accent2) 9%, transparent);
+  color: var(--text);
+  box-shadow: none;
+}
+
+.sortMenu .sortOptionActive,
+.sortMenu .sortOptionActive:hover {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+  box-shadow: none;
+}
+
+.adminBar {
+  display: grid;
+  grid-template-columns: minmax(240px, 520px) 120px;
+  gap: .6rem;
+  margin-bottom: 1rem;
+}
+
+.adminBar input,
+.editRow input {
+  min-height: 42px;
+  border: 1px solid color-mix(in srgb, var(--accent2) 16%, var(--border));
+  border-radius: 13px;
+  background: var(--surface2);
+  color: var(--text);
+  padding: .65rem .85rem;
+  font-family: Manrope, sans-serif;
+  outline: none;
+}
+
+.adminBar button,
+.editRow button {
+  padding: 0 1rem;
+  border-color: transparent;
+  background: linear-gradient(135deg, #27d7c2, #70a8ff);
+  color: #03111d;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: .85rem;
+}
+
+.card {
+  min-height: 128px;
+  padding: .95rem;
+  width: 100%;
+  border: 1px solid color-mix(in srgb, var(--accent2) 18%, var(--border));
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, transparent), color-mix(in srgb, var(--accent2) 7%, transparent)),
+    var(--surface2);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: .85rem;
+  cursor: pointer;
+  font-family: Manrope, sans-serif;
+  text-align: left;
+  transition: transform .14s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.card:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent2) 28%, transparent);
+  outline-offset: 2px;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent2) 42%, var(--border));
+  box-shadow: 0 16px 34px color-mix(in srgb, var(--accent2) 14%, transparent);
+}
+
+.cardActive {
+  border-color: color-mix(in srgb, var(--accent2) 58%, var(--border));
+  box-shadow: 0 18px 38px color-mix(in srgb, var(--accent2) 18%, transparent);
+}
+
+.iconWrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  color: #03111d;
+  background: linear-gradient(135deg, #27d7c2, #70a8ff);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  box-shadow: 0 12px 24px rgba(39, 215, 194, .22);
+}
+
+.iconWrap svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cardBody {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-top: .15rem;
+}
+
+.cardBody h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.cardBody p {
+  margin: .2rem 0 0;
+  color: var(--muted);
+  font-size: .86rem;
+  font-weight: 800;
+}
+
+.editRow {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .45rem;
+}
+
+.cardActions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: .35rem;
+  justify-content: flex-end;
+  padding-top: .65rem;
+  border-top: 1px solid color-mix(in srgb, var(--border) 62%, transparent);
+}
+
+.cardActions button {
+  border: 0;
+  min-height: 34px;
+  height: 34px;
+  width: 38px;
+  min-width: 34px;
+  padding: 0;
+  font-size: .76rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  box-shadow: none;
+  transition: transform .12s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+}
+
+.editAction {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+}
+
+.deleteAction {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 13%, transparent);
+}
+
+.editAction:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  box-shadow: 0 8px 18px rgba(15, 183, 167, .14);
+}
+
+.deleteAction:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--danger) 20%, transparent);
+  box-shadow: 0 8px 18px rgba(224, 82, 105, .14);
+}
+
+.cardActions button:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.cardActions svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.state {
+  min-height: 160px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.detailPanel {
+  margin-top: 1rem;
+}
+
+.detailHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: .95rem;
+}
+
+.detailHeader h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.08rem;
+}
+
+.detailHeader p {
+  margin: .2rem 0 0;
+  color: var(--muted);
+  font-size: .86rem;
+  font-weight: 800;
+}
+
+.closeBtn {
+  min-height: 38px;
+  padding: 0 .95rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-family: Manrope, sans-serif;
+  font-weight: 800;
+}
+
+.doctorGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: .85rem;
+}
+
+.doctorCard {
+  min-width: 0;
+  padding: .9rem;
+  border: 1px solid color-mix(in srgb, var(--accent2) 14%, var(--border));
+  border-radius: 16px;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+
+.doctorPhoto,
+.doctorAvatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  flex: 0 0 auto;
+}
+
+.doctorPhoto {
+  object-fit: cover;
+}
+
+.doctorAvatar {
+  background: linear-gradient(135deg, #27d7c2, #70a8ff);
+  color: #03111d;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.doctorInfo {
+  min-width: 0;
+}
+
+.doctorInfo h4 {
+  margin: 0;
+  color: var(--text);
+  font-size: .98rem;
+  overflow-wrap: anywhere;
+}
+
+.doctorInfo p {
+  margin: .18rem 0 .45rem;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.doctorMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+
+.doctorMeta span {
+  padding: .18rem .55rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent2) 12%, transparent);
+  color: var(--muted);
+  font-size: .74rem;
+  font-weight: 800;
+}
+
+.confirmOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  padding: 1rem;
+  background: transparent;
+  display: grid;
+  place-items: center;
+}
+
+.confirmDialog {
+  width: min(420px, 100%);
+  padding: 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--danger) 18%, var(--border));
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .28);
+  display: grid;
+  gap: .95rem;
+}
+
+.confirmIcon {
+  width: 46px;
+  height: 46px;
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--danger) 14%, transparent);
+  color: var(--danger);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirmIcon svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.confirmDialog h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.05rem;
+}
+
+.confirmDialog p {
+  margin: .25rem 0 0;
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.45;
+}
+
+.confirmActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .55rem;
+}
+
+.confirmActions button {
+  min-height: 42px;
+  padding: 0 1rem;
+  border-radius: 13px;
+  cursor: pointer;
+  font-family: Manrope, sans-serif;
+  font-weight: 900;
+}
+
+.cancelBtn {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+}
+
+.deleteBtn {
+  border: 0;
+  background: var(--danger);
+  color: #fff;
+  box-shadow: 0 12px 26px color-mix(in srgb, var(--danger) 24%, transparent);
+}
+
+.confirmActions button:disabled {
+  cursor: not-allowed;
+  opacity: .65;
+}
+
+@media (max-width: 640px) {
+  .toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .searchWrap {
+    max-width: none;
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sortSelect {
+    grid-column: 1 / -1;
+  }
+
+  .adminBar {
+    grid-template-columns: 1fr;
+    max-width: none;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: .75rem;
+  }
+
+  .card {
+    align-items: flex-start;
+    min-height: 88px;
+    padding: .85rem;
+    flex-wrap: wrap;
+  }
+
+  .cardActions {
+    width: 100%;
+  }
+
+  .cardActions button {
+    flex: 0 0 34px;
+    width: 34px;
+  }
+
+  .detailHeader {
+    align-items: flex-start;
+  }
+
+  .doctorGrid {
+    grid-template-columns: 1fr;
+  }
+}

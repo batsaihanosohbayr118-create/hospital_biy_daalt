@@ -69,7 +69,7 @@ export const schema = buildSchema(`
 export const rootValue = {
   doctor: async ({ id }, context) => {
     requireRoles(context, ['admin', 'doctor']);
-    const doctors = await query('SELECT * FROM doctors WHERE id = ?', [id]);
+    const doctors = await query('SELECT * FROM Doctor WHERE id = ?', [id]);
     if (!doctors.length) return null;
     const doctor = doctors[0];
 
@@ -77,8 +77,8 @@ export const rootValue = {
       requireRoles(ctx, ['admin', 'doctor']);
       return await query(`
         SELECT a.*, p.first_name, p.last_name
-        FROM appointments a
-        JOIN patients p ON a.patient_id = p.id
+        FROM Appointment a
+        JOIN Patient p ON a.patient_id = p.id
         WHERE a.doctor_id = ?
         ORDER BY a.appointment_date DESC
       `, [id]);
@@ -89,13 +89,13 @@ export const rootValue = {
 
   doctors: async (_args, context) => {
     requireRoles(context, ['admin', 'doctor']);
-    const doctors = await query('SELECT * FROM doctors ORDER BY last_name');
+    const doctors = await query('SELECT * FROM Doctor ORDER BY last_name');
     return doctors.map(d => ({
       ...d,
       appointments: async (_args, ctx) => {
         requireRoles(ctx, ['admin', 'doctor']);
         return await query(
-          'SELECT * FROM appointments WHERE doctor_id = ?', [d.id]
+          'SELECT * FROM Appointment WHERE doctor_id = ?', [d.id]
         );
       }
     }));
@@ -103,14 +103,14 @@ export const rootValue = {
 
   patient: async ({ id }, context) => {
     requireRoles(context, ['admin', 'doctor']);
-    const patients = await query('SELECT * FROM patients WHERE id = ?', [id]);
+    const patients = await query('SELECT * FROM Patient WHERE id = ?', [id]);
     if (!patients.length) return null;
     const patient = patients[0];
 
     patient.appointments = async (_args, ctx) => {
       requireRoles(ctx, ['admin', 'doctor']);
       return await query(
-        'SELECT * FROM appointments WHERE patient_id = ? ORDER BY appointment_date DESC',
+        'SELECT * FROM Appointment WHERE patient_id = ? ORDER BY appointment_date DESC',
         [id]
       );
     };
@@ -118,7 +118,7 @@ export const rootValue = {
     patient.prescriptions = async (_args, ctx) => {
       requireRoles(ctx, ['admin', 'doctor']);
       return await query(
-        'SELECT * FROM prescriptions WHERE patient_id = ? ORDER BY issued_at DESC',
+        'SELECT * FROM Prescription WHERE patient_id = ? ORDER BY issued_at DESC',
         [id]
       );
     };
@@ -128,20 +128,20 @@ export const rootValue = {
 
   patients: async (_args, context) => {
     requireRoles(context, ['admin', 'doctor']);
-    return await query('SELECT * FROM patients ORDER BY last_name');
+    return await query('SELECT * FROM Patient ORDER BY last_name');
   },
 
   appointment: async ({ id }, context) => {
     requireRoles(context, ['admin', 'doctor']);
-    const appointments = await query('SELECT * FROM appointments WHERE id = ?', [id]);
+    const appointments = await query('SELECT * FROM Appointment WHERE id = ?', [id]);
     return appointments[0] || null;
   },
 
   appointments: async ({ status }, context) => {
     requireRoles(context, ['admin', 'doctor']);
     if (status) {
-      return await query('SELECT * FROM appointments WHERE status = ?', [status]);
+      return await query('SELECT * FROM Appointment WHERE status = ?', [status]);
     }
-    return await query('SELECT * FROM appointments ORDER BY appointment_date DESC');
+    return await query('SELECT * FROM Appointment ORDER BY appointment_date DESC');
   }
 };

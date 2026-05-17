@@ -1,0 +1,556 @@
+
+
+.table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .88rem;
+}
+
+.table th,
+.table td {
+  padding: .3rem .6rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.table th {
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: .01em;
+  background: var(--surface2);
+}
+
+.table tr:hover td {
+  background: color-mix(in srgb, var(--surface2) 72%, var(--accent) 10%);
+}
+
+.table th:first-child,
+.table td:first-child {
+  min-width: 36px;
+  width: 36px;
+  text-align: center;
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  white-space: normal;
+  word-break: break-word;
+  min-width: 140px;
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2),
+.table th:nth-child(3),
+.table td:nth-child(3) {
+  padding-left: .45rem;
+  padding-right: .45rem;
+  min-width: 110px;
+}
+
+.patientsTable th:first-child,
+.patientsTable td:first-child {
+  width: 36px;
+  min-width: 36px;
+  text-align: center;
+}
+
+.patientsTable th,
+.patientsTable td {
+  padding-top: .35rem;
+  padding-bottom: .35rem;
+}
+
+.patientsTable th:nth-child(3),
+.patientsTable td:nth-child(3) {
+  min-width: 140px;
+  max-width: 200px;
+}
+
+.patientMobileList,
+.doctorMobileList,
+.appointmentMobileList,
+.prescriptionMobileList {
+  display: none;
+}
+
+.addShort {
+  display: none;
+}
+
+.appointmentsTable th:nth-child(5),
+.appointmentsTable td:nth-child(5),
+.appointmentsTable th:nth-child(6),
+.appointmentsTable td:nth-child(6),
+.appointmentsTable th:nth-child(7),
+.appointmentsTable td:nth-child(7) {
+  padding-left: .4rem;
+  padding-right: .4rem;
+  min-width: 90px;
+}
+
+.appointmentsTable th:nth-child(4),
+.appointmentsTable td:nth-child(4) {
+  min-width: 120px;
+}
+
+.appointmentForm {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: .85rem 1rem;
+}
+
+.appointmentForm > * {
+  min-width: 0;
+}
+
+.dateParts {
+  display: grid;
+  grid-template-columns: minmax(88px, 1.15fr) minmax(76px, 1fr) minmax(76px, 1fr);
+  gap: .45rem;
+}
+
+.dateParts > * {
+  min-width: 0;
+}
+
+.patientCreateForm {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.patientCreateForm > * {
+  min-width: 0;
+}
+
+.patientCreateForm > *:nth-child(9),
+.patientCreateForm > *:nth-child(11) {
+  grid-column: 1 / -1;
+}
+
+.appointmentForm > *:nth-child(4),
+.appointmentForm > *:last-child {
+  grid-column: 1 / -1;
+}
+
+.bookingModal {
+  width: 640px !important;
+}
+
+.timeGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: .42rem;
+}
+
+.timeSlot {
+  min-height: 38px;
+  border: 1px solid rgba(15, 183, 167, .28);
+  border-radius: 9px;
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 800;
+  font-size: .85rem;
+  font-family: Manrope, sans-serif;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .1rem;
+  transition: transform .12s ease, border-color .2s ease, background .2s ease;
+}
+
+.timeSlot:hover {
+  transform: translateY(-1px);
+  border-color: rgba(15, 183, 167, .55);
+}
+
+.timeSlotActive {
+  background: linear-gradient(135deg, #0fb7a7, #2f73ff);
+  color: #fff;
+  border-color: transparent;
+}
+
+.timeSlotTaken {
+  background: color-mix(in srgb, var(--surface2) 76%, var(--border));
+  border-color: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.timeSlotTaken:hover {
+  transform: none;
+  border-color: var(--border);
+}
+
+.timeSlot small {
+  font-size: .58rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+@media (max-width: 720px) {
+  .table {
+    font-size: .82rem;
+  }
+
+  .patientSearchBar,
+  .doctorSearchBar,
+  .appointmentSearchBar {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: .55rem;
+  }
+
+  .prescriptionSearchBar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(112px, .55fr);
+    gap: .55rem;
+  }
+
+  .prescriptionSearchBar > input {
+    width: 100%;
+    max-width: none !important;
+    min-width: 0;
+  }
+
+  .prescriptionSearchBtn,
+  .prescriptionRecordBtn,
+  .prescriptionWriteBtn {
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  .prescriptionRecordBtn,
+  .prescriptionWriteBtn {
+    grid-column: 1 / -1;
+  }
+
+  .patientSearchBar > :first-child,
+  .doctorSearchBar > :first-child,
+  .appointmentSearchBar > :first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .patientAddBtn,
+  .doctorAddBtn,
+  .appointmentAddBtn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding-left: .85rem;
+    padding-right: .85rem;
+  }
+
+  .addFull {
+    display: none;
+  }
+
+  .addShort {
+    display: inline;
+  }
+
+  .patientsTableCard,
+  .doctorsTableCard,
+  .appointmentsTableCard,
+  .prescriptionsTableCard {
+    display: none;
+  }
+
+  .patientMobileList,
+  .doctorMobileList,
+  .appointmentMobileList,
+  .prescriptionMobileList {
+    display: grid;
+    gap: .75rem;
+  }
+
+  .patientCard,
+  .doctorCard,
+  .appointmentCard,
+  .prescriptionCard {
+    background: var(--surface);
+    border: 0;
+    border-radius: 14px;
+    padding: .9rem;
+    box-shadow: var(--shadow);
+    display: grid;
+    gap: .45rem;
+    color: var(--text);
+  }
+
+  .patientCardTop,
+  .patientCardMeta,
+  .doctorCardTop,
+  .doctorCardMeta,
+  .appointmentCardTop,
+  .appointmentCardMeta,
+  .prescriptionCardTop,
+  .prescriptionCardMeta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+  }
+
+  .patientCard strong,
+  .doctorCard strong,
+  .appointmentCard strong,
+  .prescriptionCard strong {
+    font-size: .98rem;
+  }
+
+  .patientCard span,
+  .doctorCard span,
+  .appointmentCard span,
+  .prescriptionCard span {
+    color: var(--muted);
+    font-size: .82rem;
+    overflow-wrap: anywhere;
+  }
+
+  .patientCard .patientNo,
+  .doctorCard .patientNo,
+  .appointmentCard .patientNo,
+  .prescriptionCard .patientNo {
+    color: var(--accent2);
+    font-weight: 800;
+  }
+
+  .prescriptionCard p {
+    margin: 0;
+    color: var(--text);
+    font-size: .84rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .prescriptionPeople {
+    display: grid;
+    gap: .18rem;
+    padding-top: .15rem;
+  }
+
+  .appointmentDoctor {
+    display: grid;
+    gap: .12rem;
+    padding-top: .2rem;
+  }
+
+  .appointmentDoctor span {
+    color: var(--text);
+    font-weight: 800;
+  }
+
+  .appointmentDoctor small {
+    color: var(--muted);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .doctorCard .actions {
+    margin-top: .25rem;
+  }
+
+  .bookingModal {
+    width: 95vw !important;
+  }
+
+  .patientCreateForm {
+    grid-template-columns: 1fr;
+  }
+
+  .patientCreateForm > *:nth-child(9),
+  .patientCreateForm > *:nth-child(11) {
+    grid-column: 1 / -1;
+  }
+
+  .appointmentForm {
+    grid-template-columns: 1fr;
+  }
+
+  .appointmentForm > *:nth-child(4),
+  .appointmentForm > *:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .timeGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .dateParts {
+    grid-template-columns: 1fr;
+  }
+
+  .timeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.actions {
+  display: flex;
+  gap: .35rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.iconBtn {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  border: 0;
+  box-shadow: none;
+}
+
+.iconBtn svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.editBtn {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+}
+
+.passwordBtn {
+  color: var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 13%, transparent);
+}
+
+.editBtn:hover {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  box-shadow: 0 8px 18px rgba(15, 183, 167, .14);
+}
+
+.passwordBtn:hover {
+  background: color-mix(in srgb, var(--accent2) 20%, transparent);
+  box-shadow: 0 8px 18px rgba(47, 115, 255, .14);
+}
+
+.deleteBtn {
+  border: 0;
+  background: color-mix(in srgb, var(--danger) 13%, transparent);
+}
+
+.deleteBtn:hover {
+  background: color-mix(in srgb, var(--danger) 20%, transparent);
+  box-shadow: 0 8px 18px rgba(224, 82, 105, .14);
+}
+
+.confirmBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: .25rem 0 .5rem;
+}
+
+.confirmIcon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  background: color-mix(in srgb, var(--danger) 14%, var(--surface));
+  color: var(--danger);
+  border: 1px solid rgba(224, 82, 105, .22);
+}
+
+.confirmIcon svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.confirmTitle {
+  margin: .1rem 0 .35rem;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.confirmText {
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: .92rem;
+}
+
+.addBtn {
+  box-shadow: none;
+}
+
+.scheduleWrap {
+  overflow-x: auto;
+}
+
+.scheduleTable {
+  font-size: .85rem;
+}
+
+.scheduleTimeCol {
+  width: 72px;
+  min-width: 72px;
+}
+
+.scheduleTime {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.scheduleCell {
+  min-width: 140px;
+  vertical-align: top;
+}
+
+.scheduleItem {
+  background: color-mix(in srgb, var(--accent) 13%, var(--surface2));
+  border: 1px solid rgba(15, 183, 167, .25);
+  border-radius: 8px;
+  padding: .35rem .45rem;
+  min-height: 44px;
+  cursor: pointer;
+  transition: transform .1s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.scheduleItem:hover {
+  transform: translateY(-1px);
+  border-color: rgba(15, 183, 167, .45);
+  box-shadow: 0 8px 18px rgba(15, 183, 167, .14);
+}
+
+.scheduleItemCompleted {
+  background: color-mix(in srgb, var(--accent2) 14%, var(--surface2));
+  border-color: rgba(47, 115, 255, .32);
+}
+
+.scheduleName {
+  font-weight: 600;
+  font-size: .88rem;
+}
+
+.scheduleMeta {
+  margin-top: .2rem;
+}
+
+.scheduleEmpty {
+  color: var(--muted);
+  font-size: .8rem;
+}

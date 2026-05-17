@@ -1,0 +1,231 @@
+.grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1.25rem;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+
+.refreshBtn {
+  width: 44px;
+  min-width: 44px;
+  padding-inline: 0;
+}
+
+.refreshBtn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.profileCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: .35rem .2rem 1rem;
+  border-bottom: 1px dashed var(--border);
+  margin-bottom: 1rem;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #00d4aa, #3b9eff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #06101b;
+  box-shadow: 0 12px 30px rgba(0, 212, 170, .2);
+}
+
+.name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  margin-bottom: .2rem;
+}
+
+.email {
+  color: var(--muted);
+  font-size: .85rem;
+  margin-bottom: .45rem;
+}
+
+.badges {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .9rem 1rem;
+}
+
+.metaWide { grid-column: span 2; }
+
+.metaLabel {
+  font-size: .75rem;
+  color: var(--muted);
+}
+
+.metaValue {
+  font-size: .9rem;
+  margin-top: .2rem;
+}
+
+.loading {
+  padding: 2rem;
+  text-align: center;
+  color: var(--muted);
+}
+
+.notice {
+  padding: .85rem 1rem;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, .02);
+}
+
+.readonlyHint {
+  padding: 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+
+.error {
+  color: var(--danger);
+  font-size: .75rem;
+  margin-top: .25rem;
+}
+
+.dateParts {
+  display: grid;
+  grid-template-columns: minmax(88px, 1.15fr) minmax(76px, 1fr) minmax(76px, 1fr);
+  gap: .45rem;
+}
+
+.dateParts > * {
+  min-width: 0;
+}
+
+.patientForm > * {
+  min-width: 0;
+}
+
+.patientForm > *:nth-child(6) {
+  grid-column: span 2;
+}
+
+.doctorForm {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.doctorForm > * {
+  min-width: 0;
+}
+
+.doctorForm > *:nth-child(7) {
+  grid-column: 1 / -1;
+}
+
+.dayPicker {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: .4rem;
+  padding: .35rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface2);
+}
+
+.dayBtn {
+  min-height: 36px;
+  padding: .35rem .2rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-family: Manrope, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dayBtnActive {
+  background: linear-gradient(135deg, #0fb7a7, #2f73ff);
+  border-color: transparent;
+  color: #fff;
+}
+
+@media (max-width: 980px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .headerActions {
+    width: 100%;
+    flex-direction: row;
+  }
+
+  .headerActions button {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .headerActions .refreshBtn {
+    flex: 0 0 44px;
+    width: 44px;
+    min-width: 44px;
+  }
+
+  .profileCard {
+    align-items: flex-start;
+  }
+
+  .meta {
+    grid-template-columns: 1fr;
+  }
+
+  .metaWide {
+    grid-column: 1 / -1;
+  }
+
+  .dateParts {
+    grid-template-columns: 1fr;
+  }
+
+  .patientForm {
+    grid-template-columns: 1fr;
+  }
+
+  .doctorForm {
+    grid-template-columns: 1fr;
+  }
+
+  .doctorForm > *:nth-child(7) {
+    grid-column: 1 / -1;
+  }
+
+  .dayPicker {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .patientForm > *:nth-child(6) {
+    grid-column: 1 / -1;
+  }
+}

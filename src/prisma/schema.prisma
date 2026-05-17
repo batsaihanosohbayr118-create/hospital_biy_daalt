@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique @db.VarChar(100)
+  username   String?  @unique @db.VarChar(50)
+  password   String   @db.VarChar(255)
+  role       Role     @default(patient)
+  must_change_password Boolean @default(false)
+  created_at DateTime @default(now())
+
+  doctor  Doctor?
+  patient Patient?
+}
+
+enum Role {
+  admin
+  doctor
+  patient
+}
+
+model Patient {
+  id            Int        @id @default(autoincrement())
+  user_id       Int        @unique
+  first_name    String     @db.VarChar(50)
+  last_name     String     @db.VarChar(50)
+  date_of_birth DateTime   @db.Date
+  gender        Gender
+  phone         String?    @db.VarChar(20)
+  address       String?    @db.Text
+  blood_type    BloodType?
+  registry_number String?  @db.VarChar(10)
+  created_at    DateTime   @default(now())
+
+  user           User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  appointments   Appointment[]
+  prescriptions  Prescription[]
+  medical_records MedicalRecord[]
+}
+
+enum Gender {
+  male
+  female
+  other
+}
+
+enum BloodType {
+  A_POS  @map("A+")
+  A_NEG  @map("A-")
+  B_POS  @map("B+")
+  B_NEG  @map("B-")
+  AB_POS @map("AB+")
+  AB_NEG @map("AB-")
+  O_POS  @map("O+")
+  O_NEG  @map("O-")
+}
+
+model Doctor {
+  id             Int      @id @default(autoincrement())
+  user_id        Int      @unique
+  first_name     String   @db.VarChar(50)
+  last_name      String   @db.VarChar(50)
+  specialization String   @db.VarChar(100)
+  phone          String?  @db.VarChar(20)
+  license_number String   @unique @db.VarChar(50)
+  available_days String?  @default("Mon,Tue,Wed,Thu,Fri") @db.VarChar(100)
+  room_number    String?  @db.VarChar(20)
+  position_title String?  @db.VarChar(100)
+  profile_image_url String? @db.VarChar(255)
+  experience_years Int?
+  created_at     DateTime @default(now())
+
+  user            User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  appointments    Appointment[]
+  prescriptions   Prescription[]
+  medical_records MedicalRecord[]
+}
+
+model Appointment {
+  id               Int               @id @default(autoincrement())
+  patient_id       Int
+  doctor_id        Int
+  appointment_date DateTime
+  status           AppointmentStatus @default(pending)
+  notes            String?           @db.Text
+  created_at       DateTime          @default(now())
+
+  patient       Patient        @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+  doctor        Doctor         @relation(fields: [doctor_id], references: [id], onDelete: Cascade)
+  prescriptions Prescription[]
+}
+
+enum AppointmentStatus {
+  pending
+  confirmed
+  cancelled
+  completed
+}
+
+model Prescription {
+  id             Int      @id @default(autoincrement())
+  appointment_id Int
+  doctor_id      Int
+  patient_id     Int
+  medication     String   @db.VarChar(200)
+  dosage         String   @db.VarChar(100)
+  duration       String   @db.VarChar(100)
+  instructions   String?  @db.Text
+  issued_at      DateTime @default(now())
+
+  appointment Appointment @relation(fields: [appointment_id], references: [id], onDelete: Cascade)
+  doctor      Doctor      @relation(fields: [doctor_id], references: [id])
+  patient     Patient     @relation(fields: [patient_id], references: [id])
+}
+
+model MedicalRecord {
+  id               Int      @id @default(autoincrement())
+  patient_id       Int
+  doctor_id        Int
+  diagnosis        String   @db.Text
+  treatment        String?  @db.Text
+  test_results     String?  @db.Text
+  record_date      DateTime @db.Date
+  is_confidential  Boolean  @default(false)
+  created_at       DateTime @default(now())
+
+  patient Patient @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+  doctor  Doctor  @relation(fields: [doctor_id], references: [id])
+}

@@ -1,4 +1,5 @@
 import { query } from '../config/database.js';
+import bcrypt from 'bcryptjs';
 
 const normalizeRegistry = (v) => {
   if (typeof v !== 'string') return v;
@@ -13,8 +14,8 @@ export const getAllPatients = async (req, res) => {
     const patients = await query(`
       SELECT p.id, p.first_name, p.last_name, p.date_of_birth,
              p.gender, p.phone, p.blood_type, u.email
-      FROM patients p
-      JOIN users u ON p.user_id = u.id
+      FROM Patient p
+      JOIN User u ON p.user_id = u.id
       ORDER BY p.created_at DESC
     `);
     res.json({ total: patients.length, patients });
@@ -27,20 +28,20 @@ export const getMyPatientProfile = async (req, res) => {
   try {
     const patients = await query(`
       SELECT p.*, u.email
-      FROM patients p
-      JOIN users u ON p.user_id = u.id
+      FROM Patient p
+      JOIN User u ON p.user_id = u.id
       WHERE p.user_id = ?
       LIMIT 1
     `, [req.user.id]);
 
     if (patients.length === 0) {
-      const users = await query('SELECT email FROM users WHERE id = ? LIMIT 1', [req.user.id]);
+      const users = await query('SELECT email FROM User WHERE id = ? LIMIT 1', [req.user.id]);
       return res.json({ profile: null, email: users[0]?.email || null });
     }
 
     res.json(patients[0]);
   } catch (err) {
-    res.status(500).json({ error: 'Ð¡ÐµÑ€Ð²ÐµÑ€Ð¸Ð¹Ð½ Ð°Ð»Ð´Ð°Ð°.', details: err.message });
+    res.status(500).json({ error: 'Серверийн алдаа.', details: err.message });
   }
 };
 
@@ -53,7 +54,7 @@ export const updateMyPatientProfile = async (req, res) => {
     }
 
     const patients = await query(
-      'SELECT * FROM patients WHERE user_id = ? LIMIT 1',
+      'SELECT * FROM Patient WHERE user_id = ? LIMIT 1',
       [req.user.id]
     );
 
@@ -63,11 +64,11 @@ export const updateMyPatientProfile = async (req, res) => {
       }
 
       const result = await query(`
-        INSERT INTO patients (user_id, first_name, last_name, date_of_birth, gender, phone, address, blood_type, registry_number)
+        INSERT INTO Patient (user_id, first_name, last_name, date_of_birth, gender, phone, address, blood_type, registry_number)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `, [req.user.id, first_name, last_name, date_of_birth, gender, phone || null, address || null, blood_type || null, registry_number || null]);
 
-      const created = await query('SELECT p.*, u.email FROM patients p JOIN users u ON p.user_id = u.id WHERE p.id = ?', [result.insertId]);
+      const created = await query('SELECT p.*, u.email FROM Patient p JOIN User u ON p.user_id = u.id WHERE p.id = ?', [result.insertId]);
       return res.status(201).json({ message: 'Өвчтөний профайл үүсгэлээ.', patientId: result.insertId, profile: created[0] });
     }
 
@@ -84,7 +85,7 @@ export const updateMyPatientProfile = async (req, res) => {
     };
 
     await query(`
-      UPDATE patients
+      UPDATE Patient
       SET first_name=?, last_name=?, date_of_birth=?, gender=?, phone=?, address=?, blood_type=?, registry_number=?
       WHERE user_id=?
     `, [
@@ -99,10 +100,10 @@ export const updateMyPatientProfile = async (req, res) => {
       req.user.id
     ]);
 
-    const updated = await query('SELECT p.*, u.email FROM patients p JOIN users u ON p.user_id = u.id WHERE p.user_id = ? LIMIT 1', [req.user.id]);
+    const updated = await query('SELECT p.*, u.email FROM Patient p JOIN User u ON p.user_id = u.id WHERE p.user_id = ? LIMIT 1', [req.user.id]);
     res.json({ message: 'Өвчтөний профайл шинэчлэгдлээ.', profile: updated[0] });
   } catch (err) {
-    res.status(500).json({ error: 'Ð¡ÐµÑ€Ð²ÐµÑ€Ð¸Ð¹Ð½ Ð°Ð»Ð´Ð°Ð°.', details: err.message });
+    res.status(500).json({ error: 'Серверийн алдаа.', details: err.message });
   }
 };
 
@@ -111,7 +112,7 @@ export const getPatientById = async (req, res) => {
     const { id } = req.params;
     if (req.user.role === 'patient') {
       const patientCheck = await query(
-        'SELECT id FROM patients WHERE id = ? AND user_id = ?',
+        'SELECT id FROM Patient WHERE id = ? AND user_id = ?',
         [id, req.user.id]
       );
       if (patientCheck.length === 0) {
@@ -121,8 +122,8 @@ export const getPatientById = async (req, res) => {
 
     const patients = await query(`
       SELECT p.*, u.email
-      FROM patients p
-      JOIN users u ON p.user_id = u.id
+      FROM Patient p
+      JOIN User u ON p.user_id = u.id
       WHERE p.id = ?
     `, [id]);
 
@@ -138,18 +139,59 @@ export const getPatientById = async (req, res) => {
 
 export const createPatient = async (req, res) => {
   try {
-    let { user_id, first_name, last_name, date_of_birth, gender, phone, address, blood_type, registry_number } = req.body;
+    let { user_id, email, username, password, first_name, last_name, date_of_birth, gender, phone, address, blood_type, registry_number } = req.body;
     registry_number = normalizeRegistry(registry_number);
     if (registry_number && !isValidRegistry(registry_number)) {
       return res.status(400).json({ error: 'Регистрийн дугаар буруу. (2 монгол үсэг + 8 тоо)' });
     }
 
-    const result = await query(`
-      INSERT INTO patients (user_id, first_name, last_name, date_of_birth, gender, phone, address, blood_type, registry_number)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, [user_id, first_name, last_name, date_of_birth, gender, phone, address, blood_type, registry_number]);
+    if (!first_name || !last_name || !date_of_birth || !gender) {
+      return res.status(400).json({ error: 'Нэр, овог, төрсөн огноо, хүйс заавал.' });
+    }
 
-    res.status(201).json({ message: 'Өвчтөн амжилттай бүртгэгдлээ.', patientId: result.insertId });
+    let createdUserId = null;
+    if (!user_id) {
+      if (!email) {
+        return res.status(400).json({ error: 'Имэйл эсвэл user_id заавал.' });
+      }
+
+      const loginName = username?.trim() || email.split('@')[0];
+      const existing = await query('SELECT id FROM User WHERE email = ? OR username = ?', [email, loginName]);
+      if (existing.length > 0) {
+        return res.status(400).json({ error: 'Энэ имэйл эсвэл нэвтрэх нэр бүртгэлтэй байна.' });
+      }
+
+      const tempPassword = password && String(password).length > 0
+        ? String(password)
+        : `Pat${Math.random().toString(36).slice(2,6)}!${Math.floor(Math.random() * 90 + 10)}`;
+      const hashedPassword = await bcrypt.hash(tempPassword, 10);
+      const userRes = await query(
+        'INSERT INTO User (email, username, password, role, must_change_password) VALUES (?, ?, ?, ?, ?)',
+        [email, loginName, hashedPassword, 'patient', true]
+      );
+      createdUserId = userRes.insertId;
+      user_id = createdUserId;
+      req.generatedPassword = tempPassword;
+    }
+
+    const existingPatient = await query('SELECT id FROM Patient WHERE user_id = ? LIMIT 1', [user_id]);
+    if (existingPatient.length > 0) {
+      if (createdUserId) await query('DELETE FROM User WHERE id = ?', [createdUserId]);
+      return res.status(400).json({ error: 'Энэ хэрэглэгч дээр өвчтөний профайл бүртгэлтэй байна.' });
+    }
+
+    let result;
+    try {
+      result = await query(`
+        INSERT INTO Patient (user_id, first_name, last_name, date_of_birth, gender, phone, address, blood_type, registry_number)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, [user_id, first_name, last_name, date_of_birth, gender, phone || null, address || null, blood_type || null, registry_number || null]);
+    } catch (e) {
+      if (createdUserId) await query('DELETE FROM User WHERE id = ?', [createdUserId]);
+      throw e;
+    }
+
+    res.status(201).json({ message: 'Өвчтөн амжилттай бүртгэгдлээ.', patientId: result.insertId, tempPassword: req.generatedPassword });
   } catch (err) {
     res.status(500).json({ error: 'Серверийн алдаа.', details: err.message });
   }
@@ -169,7 +211,7 @@ export const updatePatient = async (req, res) => {
     }
 
     const own = await query(
-      'SELECT id FROM patients WHERE id = ? AND user_id = ?',
+      'SELECT id FROM Patient WHERE id = ? AND user_id = ?',
       [id, req.user.id]
     );
     if (own.length === 0) {
@@ -177,7 +219,7 @@ export const updatePatient = async (req, res) => {
     }
 
     await query(`
-      UPDATE patients SET first_name=?, last_name=?, phone=?, address=?, blood_type=?, registry_number=?
+      UPDATE Patient SET first_name=?, last_name=?, phone=?, address=?, blood_type=?, registry_number=?
       WHERE id=?
     `, [first_name, last_name, phone, address, blood_type, registry_number, id]);
 
