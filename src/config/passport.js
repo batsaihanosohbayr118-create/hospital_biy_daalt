@@ -5,8 +5,9 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { query } from './database.js';
 
 const usernameFromEmail = (email) => String(email || '').split('@')[0].slice(0, 50);
+export const isGoogleAuthConfigured = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
 
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+if (isGoogleAuthConfigured) {
   passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,

@@ -1,6 +1,7 @@
 import express from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
+import { isGoogleAuthConfigured } from '../config/passport.js';
 import { register, login, getMe, updateMe, changePassword } from '../controllers/authController.js';
 import {
   getAllPatients,
@@ -38,6 +39,7 @@ import { getDashboardStats } from '../controllers/dashboardController.js';
 import { authenticate, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
+const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:3001').replace(/\/$/, '');
 
 router.post('/auth/register', register);
 router.post('/auth/login', login);
@@ -48,9 +50,22 @@ router.put('/auth/change-password', authenticate, changePassword);
 router.get('/dashboard/stats', authenticate, authorize('admin', 'doctor', 'patient'), getDashboardStats);
 
 // Google OAuth
-router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/auth/google', (req, res, next) => {
+  if (!isGoogleAuthConfigured) {
+    return res.redirect(`${frontendUrl}/?error=google_oauth_not_configured`);
+  }
+  return passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+});
 router.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: 'http://localhost:3001/login', session: false }),
+  (req, res, next) => {
+    if (!isGoogleAuthConfigured) {
+      return res.redirect(`${frontendUrl}/?error=google_oauth_not_configured`);
+    }
+    return passport.authenticate('google', {
+      failureRedirect: `${frontendUrl}/?error=google_oauth_failed`,
+      session: false
+    })(req, res, next);
+  },
   (req, res) => {
     const token = jwt.sign(
       { id: req.user.id, email: req.user.email, username: req.user.username, role: req.user.role },
@@ -64,7 +79,7 @@ router.get('/auth/google/callback',
       role: req.user.role,
       must_change_password: !!req.user.must_change_password
     }));
-    res.redirect(`http://localhost:3001/auth/callback?token=${token}&user=${user}`);
+    res.redirect(`${frontendUrl}/auth/callback?token=${token}&user=${user}`);
   }
 );
 
