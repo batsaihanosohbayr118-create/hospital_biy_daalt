@@ -126,7 +126,9 @@ const s = {
   footer:   { marginTop:'auto', borderTop:'1px solid var(--border)', paddingTop:'1rem' },
   contact:  { borderTop:'1px solid var(--border)', paddingTop:'.9rem', marginTop:'1rem' },
   contactTitle: { fontSize:'.98rem', fontWeight:700, color:'var(--accent2)', letterSpacing:'.01em', marginBottom:'.55rem' },
-  contactItem: { fontSize:'.82rem', color:'var(--text)', marginBottom:'.4rem', lineHeight:1.35, paddingLeft:'.35rem', borderLeft:'2px solid rgba(64, 100, 189, 0.25)' },
+  contactItem: { display:'grid', gap:'.18rem', fontSize:'.82rem', color:'var(--text)', marginBottom:'.65rem', lineHeight:1.55, paddingLeft:'.45rem', borderLeft:'2px solid rgba(64, 100, 189, 0.18)' },
+  contactLabel: { color:'var(--muted)', fontSize:'.76rem', fontWeight:800, lineHeight:1.2 },
+  contactValue: { color:'var(--text)', fontSize:'.84rem', fontWeight:500, lineHeight:1.55, overflowWrap:'anywhere' },
   footerProfile:{ width:'100%', minHeight:48, padding:'.55rem .7rem', border:'0', borderRadius:14, background:'var(--surface2)', color:'var(--text)', cursor:'pointer', display:'flex', alignItems:'center', gap:'.7rem', fontFamily:'Manrope,sans-serif', fontSize:'.88rem', fontWeight:800, transition:'transform .14s ease, box-shadow .2s ease, background .2s ease' },
   footerProfileActive:{ transform:'translateY(-1px)', background:'color-mix(in srgb, var(--accent) 10%, var(--surface2))', boxShadow:'0 14px 28px rgba(39,215,194,.14)' },
   footerProfileIcon:{ width:34, height:34, borderRadius:12, background:'linear-gradient(135deg,#27d7c2,#70a8ff)', color:'#03111d', display:'inline-flex', alignItems:'center', justifyContent:'center', flex:'0 0 auto', boxShadow:'0 8px 18px rgba(39,215,194,.22)' },
@@ -237,7 +239,7 @@ export default function Sidebar({ page, setPage, theme = 'light' }) {
   const mobileIconWrapActive = isMobile ? { background: 'linear-gradient(135deg, #27d7c2, #70a8ff)', color: '#03111d', border: '1px solid transparent', boxShadow: '0 12px 26px rgba(112, 168, 255, .24)' } : {};
   const mobileContact = isMobile ? { marginTop: '1rem', padding: '.95rem', borderTop: '1px solid color-mix(in srgb, var(--border) 72%, transparent)', borderRadius: 18, background: 'color-mix(in srgb, var(--surface2) 72%, transparent)' } : {};
   const mobileContactTitle = isMobile ? { fontSize: '1.05rem', marginBottom: '.7rem' } : {};
-  const mobileContactItem = isMobile ? { fontSize: '.84rem', lineHeight: 1.45, marginBottom: '.5rem', color: 'var(--muted)' } : {};
+  const mobileContactItem = isMobile ? { fontSize: '.84rem', lineHeight: 1.6, marginBottom: '.65rem' } : {};
 
   return (
     <>
@@ -307,9 +309,18 @@ export default function Sidebar({ page, setPage, theme = 'light' }) {
       {user?.role === 'patient' && (
         <div style={{ ...s.contact, ...mobileContact }}>
           <div style={{ ...s.contactTitle, ...mobileContactTitle }}>Холбоо барих</div>
-          <div style={{ ...s.contactItem, ...mobileContactItem }}>Эмнэлгийн хаяг: Энхтайвны өргөн чөлөө Шангрил-Ла молл 1010</div>
-          <div style={{ ...s.contactItem, ...mobileContactItem }}>Утас: 7011-2233</div>
-          <div style={{ ...s.contactItem, ...mobileContactItem }}>Имэйл: Suld@hospital.mn</div>
+          <div style={{ ...s.contactItem, ...mobileContactItem }}>
+            <span style={s.contactLabel}>Хаяг</span>
+            <span style={s.contactValue}>Энхтайвны өргөн чөлөө, Шангри-Ла молл 1010</span>
+          </div>
+          <div style={{ ...s.contactItem, ...mobileContactItem }}>
+            <span style={s.contactLabel}>Утас</span>
+            <span style={s.contactValue}>7011-2233</span>
+          </div>
+          <div style={{ ...s.contactItem, ...mobileContactItem }}>
+            <span style={s.contactLabel}>Имэйл</span>
+            <span style={s.contactValue}>Suld@hospital.mn</span>
+          </div>
         </div>
       )}
       {!isMobile && (
