@@ -251,8 +251,34 @@ cd src
 node --check app.js
 ```
 
+## Production deploy тохиргоо
+
+### Render backend
+
+Render дээр backend service нь `src` хавтсыг root болгож ажиллах ёстой.
+
+```text
+Root Directory: src
+Build Command: npm ci
+Start Command: npm start
+```
+
+Заавал тавих environment variables:
+
+```env
+FRONTEND_URL=https://hospitalbiydaalt.vercel.app
+PUBLIC_BACKEND_URL=https://hospital-system-api-axkw.onrender.com
+GOOGLE_CALLBACK_URL=https://hospital-system-api-axkw.onrender.com/api/auth/google/callback
+```
+
+Google Cloud Console дээр Authorized redirect URI:
+
+```text
+https://hospital-system-api-axkw.onrender.com/api/auth/google/callback
+```
+
 ## Тайлбар
 
 - `.env`, `node_modules`, `build`, log файлууд git-д орохгүй.
 - Facebook login устгагдсан.
-- Google login ашиглах бол Google Cloud Console дээр redirect URI-г `http://localhost:3000/api/auth/google/callback` гэж тохируулна.
+- Google login local дээр ашиглах бол Google Cloud Console дээр redirect URI-г `http://localhost:3000/api/auth/google/callback` гэж нэмнэ.

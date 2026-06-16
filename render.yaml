@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: hospital-system-api
+    env: node
+    rootDir: src
+    buildCommand: npm ci
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URL
+        value: https://hospitalbiydaalt.vercel.app
+      - key: PUBLIC_BACKEND_URL
+        value: https://hospital-system-api-axkw.onrender.com
