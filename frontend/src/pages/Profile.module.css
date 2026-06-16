@@ -35,10 +35,35 @@
   margin-bottom: 1rem;
 }
 
+.photoBlock {
+  display: grid;
+  justify-items: center;
+  gap: .55rem;
+  flex: 0 0 auto;
+}
+
+.photoButton {
+  position: relative;
+  width: 82px;
+  height: 82px;
+  padding: 0;
+  border: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(0, 212, 170, .18);
+}
+
+.photoButton:disabled {
+  cursor: not-allowed;
+  opacity: .75;
+}
+
 .avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
   background: linear-gradient(135deg, #00d4aa, #3b9eff);
   display: flex;
   align-items: center;
@@ -47,6 +72,67 @@
   font-weight: 800;
   color: #06101b;
   box-shadow: 0 12px 30px rgba(0, 212, 170, .2);
+}
+
+.photoImg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.photoOverlay {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: .34rem .2rem .38rem;
+  background: rgba(3, 17, 29, .72);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 800;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .16s ease, transform .16s ease;
+}
+
+.photoButton:hover .photoOverlay,
+.photoButton:focus-visible .photoOverlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.photoActions {
+  display: flex;
+  gap: .35rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 128px;
+}
+
+.photoActions button {
+  min-height: 28px;
+  padding: .28rem .48rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface2);
+  color: var(--text);
+  font-family: Manrope, sans-serif;
+  font-size: .72rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.photoActions button:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  color: var(--accent);
+}
+
+.hiddenFile {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .name {

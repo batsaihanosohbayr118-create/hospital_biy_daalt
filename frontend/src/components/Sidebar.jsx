@@ -132,8 +132,11 @@ const s = {
   footerProfile:{ width:'100%', minHeight:48, padding:'.55rem .7rem', border:'0', borderRadius:14, background:'var(--surface2)', color:'var(--text)', cursor:'pointer', display:'flex', alignItems:'center', gap:'.7rem', fontFamily:'Manrope,sans-serif', fontSize:'.88rem', fontWeight:800, transition:'transform .14s ease, box-shadow .2s ease, background .2s ease' },
   footerProfileActive:{ transform:'translateY(-1px)', background:'color-mix(in srgb, var(--accent) 10%, var(--surface2))', boxShadow:'0 14px 28px rgba(39,215,194,.14)' },
   footerProfileIcon:{ width:34, height:34, borderRadius:12, background:'linear-gradient(135deg,#27d7c2,#70a8ff)', color:'#03111d', display:'inline-flex', alignItems:'center', justifyContent:'center', flex:'0 0 auto', boxShadow:'0 8px 18px rgba(39,215,194,.22)' },
+  footerProfileIconPhoto:{ overflow:'hidden', background:'transparent', color:'inherit' },
   profileShortcut:{ position:'fixed', top:'.8rem', right:'.8rem', zIndex:190, width:44, height:44, border:0, borderRadius:14, background:'linear-gradient(135deg,#27d7c2,#70a8ff)', color:'#03111d', display:'inline-flex', alignItems:'center', justifyContent:'center', cursor:'pointer', boxShadow:'0 14px 34px rgba(39,215,194,.26)', fontFamily:'Manrope,sans-serif', fontSize:'1rem', fontWeight:900, transition:'transform .14s ease, box-shadow .2s ease' },
+  profileShortcutPhoto:{ padding:0, overflow:'hidden', background:'transparent' },
   profileShortcutActive:{ transform:'translateY(-1px)', boxShadow:'0 18px 38px rgba(112,168,255,.32)' },
+  profilePhotoImg:{ width:'100%', height:'100%', display:'block', objectFit:'cover' },
   overlay:{ position:'fixed', inset:0, background:'rgba(2, 8, 18, .58)', backdropFilter:'blur(6px)', zIndex:210 },
   bottomNav:{ position:'fixed', left:'50%', bottom:'calc(.65rem + env(safe-area-inset-bottom))', zIndex:190, width:'min(13.25rem, calc(100vw - 2rem))', minHeight:62, transform:'translateX(-50%)', display:'grid', gridTemplateColumns:'repeat(3, 1fr)', alignItems:'center', gap:'.35rem', padding:'.44rem .58rem', borderRadius:22, background:'rgba(255, 255, 255, .92)', border:'1px solid rgba(39, 215, 194, .18)', boxShadow:'0 12px 30px rgba(15, 23, 42, .18), inset 0 1px 0 rgba(255, 255, 255, .9)', backdropFilter:'blur(16px)' },
   bottomNavDark:{ background:'linear-gradient(135deg, rgba(14, 35, 56, .96), rgba(8, 24, 40, .94))', border:'1px solid rgba(112, 168, 255, .18)', boxShadow:'0 16px 36px rgba(0, 0, 0, .34), inset 0 1px 0 rgba(255, 255, 255, .08)' },
@@ -178,6 +181,8 @@ const ProfileIcon = () => (
   </svg>
 );
 
+const profilePhotoKey = user => `hms_profile_photo_${user?.id || user?.email || 'guest'}`;
+
 export default function Sidebar({ page, setPage, theme = 'light' }) {
   const { user } = useAuth();
   const [hoveredNav, setHoveredNav] = useState('');
@@ -185,6 +190,7 @@ export default function Sidebar({ page, setPage, theme = 'light' }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredBottom, setHoveredBottom] = useState('');
   const [profileHover, setProfileHover] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState('');
   const [profileReturnPage, setProfileReturnPage] = useState('dashboard');
   const nav = user?.role === 'admin' ? adminNav : user?.role === 'doctor' ? doctorNav : patientNav;
   const visibleNav = isMobile ? nav.filter(item => item.id !== 'dashboard') : nav;
@@ -204,6 +210,23 @@ export default function Sidebar({ page, setPage, theme = 'light' }) {
   useEffect(() => {
     resetHoverStates();
   }, [resetHoverStates, theme]);
+
+  useEffect(() => {
+    const loadPhoto = event => {
+      if (event?.detail && 'photo' in event.detail) {
+        setProfilePhoto(event.detail.photo || '');
+        return;
+      }
+      try {
+        setProfilePhoto(localStorage.getItem(profilePhotoKey(user)) || '');
+      } catch {
+        setProfilePhoto('');
+      }
+    };
+    loadPhoto();
+    window.addEventListener('hms-profile-photo-change', loadPhoto);
+    return () => window.removeEventListener('hms-profile-photo-change', loadPhoto);
+  }, [user]);
 
   useEffect(() => {
     const media = window.matchMedia?.('(max-width: 900px)');
@@ -249,7 +272,7 @@ export default function Sidebar({ page, setPage, theme = 'light' }) {
         type="button"
         aria-label="Профайл"
         title="Профайл"
-        style={{ ...s.profileShortcut, ...(profileHover || page === 'profile' ? s.profileShortcutActive : {}) }}
+        style={{ ...s.profileShortcut, ...(profilePhoto ? s.profileShortcutPhoto : {}), ...(profileHover || page === 'profile' ? s.profileShortcutActive : {}) }}
         onClick={() => {
           if (page === 'profile') {
             setPage(profileReturnPage || 'dashboard');
@@ -262,7 +285,7 @@ export default function Sidebar({ page, setPage, theme = 'light' }) {
         onMouseEnter={() => setProfileHover(true)}
         onMouseLeave={() => setProfileHover(false)}
       >
-        <ProfileIcon />
+        {profilePhoto ? <img src={profilePhoto} alt="" style={s.profilePhotoImg} /> : <ProfileIcon />}
       </button>
     )}
     <aside style={{ ...s.sidebar, ...mobileSidebar }}>
@@ -334,7 +357,9 @@ export default function Sidebar({ page, setPage, theme = 'light' }) {
             onMouseEnter={() => setProfileHover(true)}
             onMouseLeave={() => setProfileHover(false)}
           >
-            <span style={s.footerProfileIcon}><ProfileIcon /></span>
+            <span style={{ ...s.footerProfileIcon, ...(profilePhoto ? s.footerProfileIconPhoto : {}) }}>
+              {profilePhoto ? <img src={profilePhoto} alt="" style={s.profilePhotoImg} /> : <ProfileIcon />}
+            </span>
             <span>Профайл</span>
           </button>
         </div>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import api from '../api';
 import { useToast } from '../ToastContext';
 import { PageHeader, Btn, Field, Input, PasswordInput, Select, FormGrid, TableCard } from '../components/UI';
@@ -48,6 +48,57 @@ const formatDays = v => {
   return days.map(d => weekDayOptions.find(opt => opt.value === d)?.label || d).join(', ');
 };
 
+const profilePhotoKey = user => `hms_profile_photo_${user?.id || user?.email || 'guest'}`;
+
+const resizeImage = file => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const maxSize = 720;
+      const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+      const width = Math.round(img.width * scale);
+      const height = Math.round(img.height * scale);
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      resolve(canvas.toDataURL('image/jpeg', 0.86));
+    };
+    img.onerror = reject;
+    img.src = reader.result;
+  };
+  reader.onerror = reject;
+  reader.readAsDataURL(file);
+});
+
+function ProfilePhoto({ photo, fallback, onPick, onRemove, disabled }) {
+  return (
+    <div className={styles.photoBlock}>
+      <button
+        type="button"
+        className={styles.photoButton}
+        onClick={onPick}
+        disabled={disabled}
+        aria-label="Профайл зураг солих"
+        title="Зураг солих"
+      >
+        {photo ? (
+          <img src={photo} alt="Профайл зураг" className={styles.photoImg} />
+        ) : (
+          <span className={styles.avatar}>{fallback}</span>
+        )}
+        <span className={styles.photoOverlay}>Солих</span>
+      </button>
+      <div className={styles.photoActions}>
+        <button type="button" onClick={onPick} disabled={disabled}>Зураг сонгох</button>
+        {photo && <button type="button" onClick={onRemove} disabled={disabled}>Устгах</button>}
+      </div>
+    </div>
+  );
+}
+
 const RefreshIcon = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true">
     <path d="M20 6v5h-5" />
@@ -60,10 +111,12 @@ const RefreshIcon = () => (
 export default function Profile() {
   const { user, updateUser } = useAuth();
   const toast = useToast();
+  const photoInputRef = useRef(null);
   const isAdmin = user?.role === 'admin';
   const isDoctor = user?.role === 'doctor';
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [photo, setPhoto] = useState('');
   const [notFound, setNotFound] = useState(false);
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState({});
@@ -100,6 +153,59 @@ export default function Profile() {
     registry_number: ''
   });
   const [birthDate, setBirthDate] = useState({ year: '', month: '', day: '' });
+
+  useEffect(() => {
+    try {
+      setPhoto(localStorage.getItem(profilePhotoKey(user)) || '');
+    } catch {
+      setPhoto('');
+    }
+  }, [user]);
+
+  const syncPhoto = nextPhoto => {
+    setPhoto(nextPhoto);
+    window.dispatchEvent(new CustomEvent('hms-profile-photo-change', { detail: { photo: nextPhoto } }));
+  };
+
+  const pickPhoto = () => {
+    photoInputRef.current?.click();
+  };
+
+  const handlePhotoChange = async e => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      return toast('Зөвхөн зураг файл сонгоно уу.', 'error');
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      return toast('Зургийн хэмжээ 5MB-аас бага байх ёстой.', 'error');
+    }
+    try {
+      const nextPhoto = await resizeImage(file);
+      localStorage.setItem(profilePhotoKey(user), nextPhoto);
+      syncPhoto(nextPhoto);
+      toast('Профайл зураг шинэчлэгдлээ.');
+    } catch {
+      toast('Зураг уншихад алдаа гарлаа.', 'error');
+    }
+  };
+
+  const removePhoto = () => {
+    localStorage.removeItem(profilePhotoKey(user));
+    syncPhoto('');
+    toast('Профайл зураг устгагдлаа.');
+  };
+
+  const photoInput = (
+    <input
+      ref={photoInputRef}
+      className={styles.hiddenFile}
+      type="file"
+      accept="image/*"
+      onChange={handlePhotoChange}
+    />
+  );
 
   const set = k => e => {
     let v = e.target.value;
@@ -371,6 +477,7 @@ export default function Profile() {
   if (isAdmin) {
     return (
       <div className="fade-up">
+        {photoInput}
         <PageHeader
           title="Миний профайл"
           subtitle="Админ аккаунтын мэдээлэл"
@@ -400,9 +507,13 @@ export default function Profile() {
         <div className={styles.grid}>
           <TableCard>
             <div className={styles.profileCard}>
-              <div className={styles.avatar}>
-                {(user?.username?.[0] || email?.[0] || '?').toUpperCase()}
-              </div>
+              <ProfilePhoto
+                photo={photo}
+                fallback={(user?.username?.[0] || email?.[0] || '?').toUpperCase()}
+                onPick={pickPhoto}
+                onRemove={removePhoto}
+                disabled={loading || saving}
+              />
               <div>
                 <h3 className={styles.name}>{user?.username || 'Админ'}</h3>
                 <p className={styles.email}>{email || user?.email || '—'}</p>
@@ -456,6 +567,7 @@ export default function Profile() {
   if (isDoctor) {
     return (
       <div className="fade-up">
+        {photoInput}
         <PageHeader
           title="Миний профайл"
           subtitle="Өөрийн мэдээллээ харах, засах"
@@ -485,9 +597,13 @@ export default function Profile() {
         <div className={styles.grid}>
           <TableCard>
             <div className={styles.profileCard}>
-              <div className={styles.avatar}>
-                {(doctorProfile?.first_name?.[0] || email?.[0] || '?').toUpperCase()}
-              </div>
+              <ProfilePhoto
+                photo={photo}
+                fallback={(doctorProfile?.first_name?.[0] || email?.[0] || '?').toUpperCase()}
+                onPick={pickPhoto}
+                onRemove={removePhoto}
+                disabled={loading || saving}
+              />
               <div>
                 <h3 className={styles.name}>
                   {doctorProfile?.first_name || '—'} {doctorProfile?.last_name || ''}
@@ -594,6 +710,7 @@ export default function Profile() {
 
   return (
     <div className="fade-up">
+      {photoInput}
       <PageHeader
         title="Миний профайл"
         subtitle="Өөрийн мэдээллээ харах, засах"
@@ -623,9 +740,13 @@ export default function Profile() {
       <div className={styles.grid}>
         <TableCard>
           <div className={styles.profileCard}>
-            <div className={styles.avatar}>
-              {(form.first_name?.[0] || email?.[0] || '?').toUpperCase()}
-            </div>
+            <ProfilePhoto
+              photo={photo}
+              fallback={(form.first_name?.[0] || email?.[0] || '?').toUpperCase()}
+              onPick={pickPhoto}
+              onRemove={removePhoto}
+              disabled={loading || saving}
+            />
             <div>
               <h3 className={styles.name}>
                 {form.first_name || '—'} {form.last_name || ''}
