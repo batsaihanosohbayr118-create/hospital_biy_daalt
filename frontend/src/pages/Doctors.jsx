@@ -4,6 +4,7 @@ import Modal from '../components/Modal';
 import { PageHeader, SearchBar, SearchInput, Btn, TableCard, EmptyRow, LoadingRow, Field, Input, PasswordInput, Select, FormGrid, ModalFooter } from '../components/UI';
 import { useToast } from '../ToastContext';
 import { useAuth } from '../AuthContext';
+import { getDoctorPhoto, withDoctorPhoto } from '../utils/doctorPhotos';
 import styles from './Table.module.css';
 
 const EditIcon = () => (
@@ -56,7 +57,8 @@ export default function Doctors() {
     setLoading(true);
     try {
       const { data } = await api.get('/doctors');
-      setAll(data.doctors); setFiltered(data.doctors);
+      const doctors = (data.doctors || []).map(withDoctorPhoto);
+      setAll(doctors); setFiltered(doctors);
     } catch { toast('Мэдээлэл ачаалахад алдаа гарлаа.', 'error'); }
     finally { setLoading(false); }
   }, [toast]);
@@ -186,17 +188,24 @@ export default function Doctors() {
       </SearchBar>
 
       <TableCard className={styles.doctorsTableCard}>
-        <table className={styles.table}>
+        <table className={`${styles.table} ${styles.doctorsTable}`}>
           <thead>
             <tr>
-              <th>№</th><th>Нэр</th><th>Тасаг</th><th>Имэйл</th><th>Утас</th><th>Туршлага</th>{isAdmin && <th>Албан тушаал</th>}<th>Өрөө</th><th>Ажлын өдрүүд</th>{isAdmin && <th>Үйлдэл</th>}
+              <th>№</th><th>Зураг</th><th>Нэр</th><th>Тасаг</th><th>Имэйл</th><th>Утас</th><th>Туршлага</th>{isAdmin && <th>Албан тушаал</th>}<th>Өрөө</th><th>Ажлын өдрүүд</th>{isAdmin && <th>Үйлдэл</th>}
             </tr>
           </thead>
           <tbody>
-            {loading ? <LoadingRow cols={isAdmin ? 11 : 9} /> : filtered.length === 0 ? <EmptyRow cols={isAdmin ? 11 : 9} /> :
+            {loading ? <LoadingRow cols={isAdmin ? 11 : 10} /> : filtered.length === 0 ? <EmptyRow cols={isAdmin ? 11 : 10} /> :
               filtered.map((d, i) => (
                 <tr key={d.id}>
                   <td>{i + 1}</td>
+                  <td>
+                    <img
+                      src={getDoctorPhoto(d)}
+                      alt={`${d.first_name} ${d.last_name}`}
+                      className={styles.doctorThumb}
+                    />
+                  </td>
                   <td><strong>{d.first_name} {d.last_name}</strong></td>
                   <td>{d.specialization || '—'}</td>
                   <td>{d.email}</td>
@@ -235,7 +244,14 @@ export default function Doctors() {
         ) : filtered.map((d, i) => (
           <div className={styles.doctorCard} key={d.id}>
             <div className={styles.doctorCardTop}>
-              <span className={styles.patientNo}>#{i + 1}</span>
+              <div className={styles.doctorMobileIdentity}>
+                <img
+                  src={getDoctorPhoto(d)}
+                  alt={`${d.first_name} ${d.last_name}`}
+                  className={styles.doctorMobilePhoto}
+                />
+                <span className={styles.patientNo}>#{i + 1}</span>
+              </div>
               <span className="badge confirmed">{d.specialization || '—'}</span>
             </div>
             <strong>{d.first_name} {d.last_name}</strong>

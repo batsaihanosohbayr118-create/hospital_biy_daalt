@@ -33,6 +33,29 @@
   text-align: center;
 }
 
+.doctorThumb {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 8px 18px rgba(47, 115, 255, .12);
+}
+
+.doctorMobileIdentity {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+}
+
+.doctorMobilePhoto {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 8px 18px rgba(47, 115, 255, .12);
+}
+
 .table th:nth-child(2),
 .table td:nth-child(2) {
   white-space: normal;
@@ -40,13 +63,39 @@
   min-width: 140px;
 }
 
-.table th:nth-child(2),
-.table td:nth-child(2),
 .table th:nth-child(3),
 .table td:nth-child(3) {
   padding-left: .45rem;
   padding-right: .45rem;
   min-width: 110px;
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  padding-left: .45rem;
+  padding-right: .45rem;
+  min-width: 110px;
+}
+
+.doctorsTable th:nth-child(2),
+.doctorsTable td:nth-child(2) {
+  width: 56px;
+  min-width: 56px;
+}
+
+.doctorsTable th:nth-child(3),
+.doctorsTable td:nth-child(3) {
+  white-space: normal;
+  word-break: break-word;
+  min-width: 140px;
+}
+
+.doctorsTable th:nth-child(3),
+.doctorsTable td:nth-child(3),
+.doctorsTable th:nth-child(4),
+.doctorsTable td:nth-child(4) {
+  padding-left: .45rem;
+  padding-right: .45rem;
 }
 
 .patientsTable th:first-child,

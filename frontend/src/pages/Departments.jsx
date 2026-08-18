@@ -3,6 +3,7 @@ import api from '../api';
 import { useAuth } from '../AuthContext';
 import { useToast } from '../ToastContext';
 import { PageHeader, TableCard } from '../components/UI';
+import { getDoctorPhoto, withDoctorPhoto } from '../utils/doctorPhotos';
 import styles from './Departments.module.css';
 
 const DepartmentIcon = () => (
@@ -105,14 +106,6 @@ const EmergencyIcon = () => (
   </svg>
 );
 
-const DoctorIcon = () => (
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <circle cx="12" cy="7" r="3.2" />
-    <path d="M5.5 20a6.5 6.5 0 0 1 13 0" />
-    <path d="M9 13.2 12 17l3-3.8" />
-  </svg>
-);
-
 const InternalIcon = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true">
     <path d="M8.8 4.5c-1.9 2.1-2.8 4.6-2.8 7.4 0 3.9 2.2 7.1 5.2 7.1" />
@@ -162,7 +155,7 @@ export default function Departments() {
         api.get('/doctors')
       ]);
       setDepartments(depRes.data.departments || []);
-      setDoctors(doctorRes.data.doctors || []);
+      setDoctors((doctorRes.data.doctors || []).map(withDoctorPhoto));
     } catch {
       setDepartments([]);
       setDoctors([]);
@@ -402,11 +395,7 @@ export default function Departments() {
             <div className={styles.doctorGrid}>
               {selectedDoctors.map(doctor => (
                 <div key={doctor.id} className={styles.doctorCard}>
-                  {doctor.profile_image_url ? (
-                    <img src={doctor.profile_image_url} alt={`${doctor.first_name} ${doctor.last_name}`} className={styles.doctorPhoto} />
-                  ) : (
-                    <div className={styles.doctorAvatar}><DoctorIcon /></div>
-                  )}
+                  <img src={getDoctorPhoto(doctor)} alt={`${doctor.first_name} ${doctor.last_name}`} className={styles.doctorPhoto} />
                   <div className={styles.doctorInfo}>
                     <h4>{doctor.first_name} {doctor.last_name}</h4>
                     <p>{doctor.position_title || 'Эмч'}</p>

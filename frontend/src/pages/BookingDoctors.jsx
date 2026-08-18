@@ -1,6 +1,7 @@
 ﻿import { useCallback, useEffect, useState } from 'react';
 import api from '../api';
 import { PageHeader, TableCard, Btn } from '../components/UI';
+import { getDoctorPhoto, withDoctorPhoto } from '../utils/doctorPhotos';
 import styles from './BookingFlow.module.css';
 
 export default function BookingDoctors({ department, onBack, onSelectDoctor }) {
@@ -11,7 +12,7 @@ export default function BookingDoctors({ department, onBack, onSelectDoctor }) {
     setLoading(true);
     try {
       const { data } = await api.get('/doctors');
-      setDoctors((data.doctors || []).filter(d => d.specialization === department));
+      setDoctors((data.doctors || []).filter(d => d.specialization === department).map(withDoctorPhoto));
     } catch {
       setDoctors([]);
     } finally {
@@ -36,11 +37,7 @@ export default function BookingDoctors({ department, onBack, onSelectDoctor }) {
           <div className={styles.grid}>
             {doctors.map(d => (
               <div key={d.id} className={styles.doctorCard}>
-                {d.profile_image_url ? (
-                  <img src={d.profile_image_url} alt={`${d.first_name} ${d.last_name}`} className={styles.doctorPhoto} />
-                ) : (
-                  <div className={styles.doctorAvatar}>{(d.first_name?.[0] || 'Э').toUpperCase()}</div>
-                )}
+                <img src={getDoctorPhoto(d)} alt={`${d.first_name} ${d.last_name}`} className={styles.doctorPhoto} />
                 <div className={styles.doctorInfo}>
                   <div className={styles.cardTitle}>{d.first_name} {d.last_name}</div>
                   <div className={styles.cardSub}>{d.specialization}</div>
