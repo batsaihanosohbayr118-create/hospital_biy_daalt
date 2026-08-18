@@ -32,7 +32,7 @@ function LogoMark() {
   );
 }
 
-export default function Auth() {
+export default function Auth({ onBack }) {
   const [tab, setTab] = useState('login');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -97,6 +97,11 @@ export default function Auth() {
     <div className={`${styles.wrap} ${tab === 'register' ? styles.registerMode : ''}`}>
       <div className={styles.bg} />
       <div className={`${styles.card} ${tab === 'register' ? styles.registerCard : ''} fade-up`}>
+        {onBack && (
+          <button type="button" className={styles.backLink} onClick={onBack}>
+            ← Нүүр хуудас
+          </button>
+        )}
         <div className={styles.logo}>
           <div className={styles.logoIcon}><LogoMark /></div>
           <div>

@@ -79,6 +79,23 @@
   box-shadow: 0 34px 90px rgba(0, 0, 0, .42);
 }
 
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-family: Manrope, sans-serif;
+  font-size: .82rem;
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 1.1rem;
+  transition: color .18s ease;
+}
+.backLink:hover { color: var(--accent2); }
+
 .logo { display: flex; gap: .85rem; align-items: center; margin-bottom: 1.5rem; }
 .logoIcon {
   width: 44px; height: 44px; border-radius: 12px;

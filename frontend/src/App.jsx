@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { AuthProvider, useAuth } from './AuthContext';
 import { ToastProvider } from './ToastContext';
 import Auth from './pages/Auth';
+import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import Patients from './pages/Patients';
 import Doctors from './pages/Doctors';
@@ -25,11 +26,19 @@ const getInitialTheme = () => {
   return getSystemTheme();
 };
 
+const hasAuthCallback = () =>
+  typeof window !== 'undefined' && /[?&](token|error)=/.test(window.location.search);
+
 function Inner({ theme, setTheme }) {
   const { user } = useAuth();
   const [page, setPage] = useState('dashboard');
+  const [authView, setAuthView] = useState(() => (hasAuthCallback() ? 'auth' : 'landing'));
 
-  if (!user) return <Auth />;
+  if (!user) {
+    return authView === 'landing'
+      ? <Landing onGetStarted={() => setAuthView('auth')} onLogin={() => setAuthView('auth')} />
+      : <Auth onBack={() => setAuthView('landing')} />;
+  }
 
   const renderPage = () => {
     switch (page) {

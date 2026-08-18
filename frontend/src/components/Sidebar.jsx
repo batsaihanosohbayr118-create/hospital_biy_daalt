@@ -1,6 +1,21 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../AuthContext';
 
+const LogoMark = () => (
+  <svg viewBox="0 0 48 48" aria-hidden="true" style={{ width: '100%', height: '100%', display: 'block' }}>
+    <defs>
+      <linearGradient id="sidebarLogoGrad" x1="8" y1="6" x2="42" y2="44" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#2f6bff" />
+        <stop offset="1" stopColor="#00b3a4" />
+      </linearGradient>
+    </defs>
+    <rect x="5" y="5" width="38" height="38" rx="13" fill="url(#sidebarLogoGrad)" />
+    <path d="M21 13h6v8h8v6h-8v8h-6v-8h-8v-6h8z" fill="#fff" />
+    <path d="M12 35h6l2.5-5 4.5 8 3.5-6H36" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" opacity=".92" />
+    <circle cx="36.5" cy="12.5" r="3.5" fill="#dffcf8" opacity=".9" />
+  </svg>
+);
+
 const DashboardIcon = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true" style={{ width: 22, height: 22, fill: 'none', stroke: 'currentColor', strokeWidth: 2.2, strokeLinecap: 'round', strokeLinejoin: 'round' }}>
     <path d="M4 11.5 12 5l8 6.5" />
@@ -110,8 +125,9 @@ const patientNav = [
 const s = {
   sidebar:  { width:240, minHeight:'100vh', background:'var(--surface)', borderRight:'1px solid var(--border)', display:'flex', flexDirection:'column', padding:'1.5rem 1rem', position:'fixed', left:0, top:0, bottom:0, zIndex:100 },
   logo:     { display:'flex', alignItems:'center', gap:'.65rem', marginBottom:'2.5rem', padding:'0 .5rem' },
-  logoIcon: { width:38, height:38, borderRadius:10, background:'linear-gradient(135deg,#00d4aa,#3b9eff)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1.1rem' },
-  logoText: { fontFamily:"Roboto, serif", fontSize:'1.78rem', fontWeight:900, letterSpacing:'.02em', color:'var(--text)' },
+  logoIcon: { width:42, height:42, borderRadius:12, flex:'0 0 auto', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden', boxShadow:'0 12px 24px rgba(47,107,255,.2)', background:'#ffffff' },
+  logoTitle: { fontFamily:"'Playfair Display', serif", fontSize:'1.2rem', fontWeight:800, lineHeight:1.2, color:'var(--text)' },
+  logoSub: { fontSize:'.74rem', color:'var(--muted)' },
   mobileBrandTitle:{ display:'block', fontFamily:"Playfair Display, serif", fontSize:'2rem', lineHeight:1.05, fontWeight:900, color:'var(--text)' },
   mobileBrandSub:{ display:'block', marginTop:'.3rem', fontSize:'.86rem', lineHeight:1.25, fontWeight:700, color:'var(--muted)' },
   nav:      { display:'flex', flexDirection:'column', gap:'.25rem' },
@@ -260,9 +276,6 @@ export default function Sidebar({ page, setPage, theme = 'light' }) {
   const mobileIconWrap = isMobile ? { width: 36, height: 36, borderRadius: 13, background: 'color-mix(in srgb, var(--accent) 12%, transparent)', color: 'var(--accent2)', border: '1px solid color-mix(in srgb, var(--accent) 12%, transparent)' } : {};
   const mobileIconWrapDark = isMobile && theme === 'dark' ? { background: 'rgba(39, 215, 194, .10)', color: '#bfeeff', border: '1px solid rgba(112, 168, 255, .16)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, .06), 0 10px 24px rgba(39, 215, 194, .08)' } : {};
   const mobileIconWrapActive = isMobile ? { background: 'linear-gradient(135deg, #27d7c2, #70a8ff)', color: '#03111d', border: '1px solid transparent', boxShadow: '0 12px 26px rgba(112, 168, 255, .24)' } : {};
-  const mobileContact = isMobile ? { marginTop: '1rem', padding: '.95rem', borderTop: '1px solid color-mix(in srgb, var(--border) 72%, transparent)', borderRadius: 18, background: 'color-mix(in srgb, var(--surface2) 72%, transparent)' } : {};
-  const mobileContactTitle = isMobile ? { fontSize: '1.05rem', marginBottom: '.7rem' } : {};
-  const mobileContactItem = isMobile ? { fontSize: '.84rem', lineHeight: 1.6, marginBottom: '.65rem' } : {};
 
   return (
     <>
@@ -290,13 +303,17 @@ export default function Sidebar({ page, setPage, theme = 'light' }) {
     )}
     <aside style={{ ...s.sidebar, ...mobileSidebar }}>
       <div style={{ ...s.logo, ...mobileLogo }}>
+        <span style={s.logoIcon}><LogoMark /></span>
         {isMobile ? (
-          <span style={{ ...s.logoText, ...mobileLogoText }}>
+          <span style={mobileLogoText}>
             <span style={s.mobileBrandTitle}>МедСистем</span>
             <span style={s.mobileBrandSub}>Эмнэлгийн удирдлагын систем</span>
           </span>
         ) : (
-          <span style={s.logoText}>Hospital Management System</span>
+          <span>
+            <span style={{ ...s.logoTitle, display:'block' }}>МедСистем</span>
+            <span style={{ ...s.logoSub, display:'block' }}>Эмнэлгийн удирдлагын систем</span>
+          </span>
         )}
       </div>
       <nav style={{ ...s.nav, ...mobileNav }}>
@@ -329,23 +346,6 @@ export default function Sidebar({ page, setPage, theme = 'light' }) {
           </button>
         );})}
       </nav>
-      {user?.role === 'patient' && (
-        <div style={{ ...s.contact, ...mobileContact }}>
-          <div style={{ ...s.contactTitle, ...mobileContactTitle }}>Холбоо барих</div>
-          <div style={{ ...s.contactItem, ...mobileContactItem }}>
-            <span style={s.contactLabel}>Хаяг</span>
-            <span style={s.contactValue}>Энхтайвны өргөн чөлөө, Шангри-Ла молл 1010</span>
-          </div>
-          <div style={{ ...s.contactItem, ...mobileContactItem }}>
-            <span style={s.contactLabel}>Утас</span>
-            <span style={s.contactValue}>7011-2233</span>
-          </div>
-          <div style={{ ...s.contactItem, ...mobileContactItem }}>
-            <span style={s.contactLabel}>Имэйл</span>
-            <span style={s.contactValue}>Suld@hospital.mn</span>
-          </div>
-        </div>
-      )}
       {!isMobile && (
         <div style={s.footer}>
           <button
