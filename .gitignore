@@ -30,3 +30,7 @@ coverage/
 frontend/coverage/
 src/coverage/
 .vercel
+
+# database dumps
+*.sql
+hospital_db_backup.sql
