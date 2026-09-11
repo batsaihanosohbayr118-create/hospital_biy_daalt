@@ -491,6 +491,7 @@ export default function Landing({ onGetStarted, onLogin, onLearnMore }) {
               <div className={styles.emergencyIconWrap}><HeadsetIcon /></div>
               <div className={styles.emergencyTitle}>Яаралтай тусламж хэрэгтэй юу?</div>
               <p className={styles.emergencyText}>Бид 24/7 онлайн бэлэн байдаг. Таны эрүүл мэнд бидний тэргүүн зорилго.</p>
+              <img src="/ambulance.png" alt="Түргэн тусламжийн машин" className={styles.emergencyImg} />
               <a href="tel:+97670112233" className={styles.emergencyPhone}>
                 <span className={styles.emergencyPhoneIcon}>☎</span> 7011-2233
               </a>
