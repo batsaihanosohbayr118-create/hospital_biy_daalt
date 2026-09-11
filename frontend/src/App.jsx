@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './AuthContext';
 import { ToastProvider } from './ToastContext';
 import Auth from './pages/Auth';
 import Landing from './pages/Landing';
+import About from './pages/About';
 import Dashboard from './pages/Dashboard';
 import Patients from './pages/Patients';
 import Doctors from './pages/Doctors';
@@ -35,8 +36,23 @@ function Inner({ theme, setTheme }) {
   const [authView, setAuthView] = useState(() => (hasAuthCallback() ? 'auth' : 'landing'));
 
   if (!user) {
+    if (authView === 'about') {
+      return (
+        <About
+          onBack={() => setAuthView('landing')}
+          onLogin={() => setAuthView('auth')}
+          onGetStarted={() => setAuthView('auth')}
+        />
+      );
+    }
     return authView === 'landing'
-      ? <Landing onGetStarted={() => setAuthView('auth')} onLogin={() => setAuthView('auth')} />
+      ? (
+        <Landing
+          onGetStarted={() => setAuthView('auth')}
+          onLogin={() => setAuthView('auth')}
+          onLearnMore={() => setAuthView('about')}
+        />
+      )
       : <Auth onBack={() => setAuthView('landing')} />;
   }
 

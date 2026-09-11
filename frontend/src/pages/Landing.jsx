@@ -57,41 +57,121 @@ function FeatureIcon({ d }) {
   );
 }
 
-const FEATURES = [
-  {
-    icon: 'M4 10.5h16M7 3.5v4M17 3.5v4M6.5 6.5h11A2.5 2.5 0 0 1 20 9v10a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19V9a2.5 2.5 0 0 1 2.5-2.5Z',
-    title: 'Онлайн цаг захиалга',
-    desc: 'Тасаг, эмчээ сонгоод чөлөөтэй цагаа хэдхэн товшилтоор захиалаарай.'
-  },
-  {
-    icon: 'M7 4h7.5L19 8.5V20a1.8 1.8 0 0 1-1.8 1.8H7A1.8 1.8 0 0 1 5.2 20V5.8A1.8 1.8 0 0 1 7 4Z M14.3 4v4.7H19 M8.7 12.4h5.6 M8.7 15.5h3.3',
-    title: 'Дижитал жор',
-    desc: 'Эмчийн бичсэн жороо шууд харж, PDF хэлбэрээр хэвлэн авах боломжтой.'
-  },
-  {
-    icon: 'M9 3v4a2 2 0 0 0 4 0V3 M7 3h1.5 M13.5 3H15 M11 11v2.2a4 4 0 0 0 8 0v-.7 M19.5 12a1.35 1.35 0 1 0 0-2.7 1.35 1.35 0 0 0 0 2.7Z M5 21v-3.4A4.6 4.6 0 0 1 9.6 13H10',
-    title: 'Мэргэжлийн эмч нар',
-    desc: 'Тасаг тус бүрээр ангилсан, туршлагатай эмч нарын мэдээллийг харах.'
-  },
-  {
-    icon: 'M5 20V6.8A2.8 2.8 0 0 1 7.8 4h8.4A2.8 2.8 0 0 1 19 6.8V20 M3.5 20h17 M9 8h6 M9 13.5h5',
-    title: 'Тасгаар удирдах',
-    desc: 'Эмнэлгийн тасаг, өрөө, ажлын хуваарийг нэг дороос удирдах.'
-  },
-  {
-    icon: 'M12 3 5 6.2v5.4C5 16.2 8 19.8 12 21c4-1.2 7-4.8 7-9.4V6.2L12 3Z M9.3 12.1l1.9 1.9 3.6-3.9',
-    title: 'Аюулгүй нэвтрэлт',
-    desc: 'JWT болон Google OAuth ашигласан найдвартай, аюулгүй нэвтрэх систем.'
-  },
-  {
-    icon: 'M4 11.5 12 5l8 6.5 M6.5 10.5V19h11v-8.5 M9.4 19v-4.8h5.2V19',
-    title: 'Хяналтын самбар',
-    desc: 'Админ, эмч, өвчтөн тус бүрдээ зориулсан статистик, хяналтын самбартай.'
-  }
+function ArrowRightIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.btnIcon}>
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  );
+}
+
+function DoctorSearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.btnIcon}>
+      <circle cx="10" cy="8.5" r="3.2" />
+      <path d="M4.5 19a5.6 5.6 0 0 1 11 0" />
+      <circle cx="18" cy="16.5" r="2.6" />
+      <path d="M20 18.5 22 20.5" />
+    </svg>
+  );
+}
+
+function HeadsetIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.miniCardIconSvg}>
+      <path d="M4 13v-1a8 8 0 0 1 16 0v1" />
+      <rect x="3" y="13" width="4.2" height="6" rx="1.6" />
+      <rect x="16.8" y="13" width="4.2" height="6" rx="1.6" />
+      <path d="M19.5 19.5v.6a2.9 2.9 0 0 1-2.9 2.9H14" />
+    </svg>
+  );
+}
+
+function CalendarPlusIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.banIconSvg}>
+      <rect x="4" y="5.5" width="16" height="14.5" rx="3" />
+      <path d="M8 3.5v4" />
+      <path d="M16 3.5v4" />
+      <path d="M4 10h16" />
+      <path d="M12 13v5" />
+      <path d="M9.5 15.5h5" />
+    </svg>
+  );
+}
+
+function PersonPlusIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.banBadgeSvg}>
+      <circle cx="10" cy="9" r="3.6" />
+      <path d="M3.8 20a6.3 6.3 0 0 1 12.4 0" />
+      <path d="M18.5 8.5v5" />
+      <path d="M16 11h5" />
+    </svg>
+  );
+}
+
+function PinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.footerContactIconSvg}>
+      <path d="M12 21.5c4-4 7-7.7 7-11.5a7 7 0 1 0-14 0c0 3.8 3 7.5 7 11.5Z" />
+      <circle cx="12" cy="10" r="2.6" />
+    </svg>
+  );
+}
+
+function PhoneIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.footerContactIconSvg}>
+      <path d="M5 4.5h3.2l1.3 4.4-2.1 1.7a13 13 0 0 0 5.9 5.9l1.7-2.1 4.4 1.3V19a1.7 1.7 0 0 1-1.8 1.7A15.3 15.3 0 0 1 3.3 6.3 1.7 1.7 0 0 1 5 4.5Z" />
+    </svg>
+  );
+}
+
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.footerContactIconSvg}>
+      <rect x="3.5" y="5.5" width="17" height="13" rx="2.4" />
+      <path d="m4.5 7 7.5 6 7.5-6" />
+    </svg>
+  );
+}
+
+function ShieldCheckIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.miniCardIconSvg}>
+      <path d="M12 3.2 19 6v5.4c0 4.6-3 7.9-7 9.4-4-1.5-7-4.8-7-9.4V6Z" />
+      <path d="m9 12 2.2 2.2L15.5 10" />
+    </svg>
+  );
+}
+
+function UsersGroupIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.miniCardIconSvg}>
+      <circle cx="9" cy="8.4" r="3" />
+      <path d="M3.8 19a5.2 5.2 0 0 1 10.4 0" />
+      <circle cx="17.3" cy="9.6" r="2.3" />
+      <path d="M14.5 17.9a4.1 4.1 0 0 1 5.7 0" />
+    </svg>
+  );
+}
+
+const HERO_MINI_CARDS = [
+  { icon: <HeadsetIcon />, title: '24/7', desc: 'Онлайн дэмжлэг' },
+  { icon: <ShieldCheckIcon />, title: 'Баталгаат', desc: 'Мэргэжлийн эмч нар' },
+  { icon: <UsersGroupIcon />, title: '10,000+', desc: 'Сэтгэл ханамжтай хэрэглэгч' }
 ];
 
-const HERO_LINE_1 = ['Эмнэлгийн', 'цагаа'];
-const HERO_LINE_2 = ['хэдхэн', 'товшилтоор', 'захиалаарай'];
+const HERO_AVATARS = [
+  '/doctor-portraits/doctor-01.jpg',
+  '/doctor-portraits/doctor-03.jpg',
+  '/doctor-portraits/doctor-05.jpg',
+  '/doctor-portraits/doctor-07.jpg'
+];
+
+const HERO_LINE_1 = ['Эмнэлгийн', 'цагаа', 'хэдхэн'];
+const HERO_LINE_2 = ['товшилтоор', 'захиалаарай'];
 
 function AnimatedWords({ words, startIndex = 0 }) {
   return words.map((word, i) => (
@@ -105,13 +185,113 @@ function AnimatedWords({ words, startIndex = 0 }) {
   ));
 }
 
+const QUICK_LINKS = [
+  {
+    icon: 'M9 3v4a2 2 0 0 0 4 0V3 M7 3h1.5 M13.5 3H15 M11 11v2.2a4 4 0 0 0 8 0v-.7 M19.5 12a1.35 1.35 0 1 0 0-2.7 1.35 1.35 0 0 0 0 2.7Z M5 21v-3.4A4.6 4.6 0 0 1 9.6 13H10',
+    title: 'Эмч хайх',
+    desc: 'Мэргэшсэн эмч нартайгаа холбогдоорой.'
+  },
+  {
+    icon: 'M4 10.5h16M7 3.5v4M17 3.5v4M6.5 6.5h11A2.5 2.5 0 0 1 20 9v10a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19V9a2.5 2.5 0 0 1 2.5-2.5Z',
+    title: 'Цаг захиалах',
+    desc: 'Хэдхэн товшилтоор цаг захиална.'
+  },
+  {
+    icon: 'M7 4h7.5L19 8.5V20a1.8 1.8 0 0 1-1.8 1.8H7A1.8 1.8 0 0 1 5.2 20V5.8A1.8 1.8 0 0 1 7 4Z M14.3 4v4.7H19 M8.7 12.4h5.6 M8.7 15.5h3.3',
+    title: 'Миний жор',
+    desc: 'Бичигдсэн жороо шууд харна.'
+  },
+  {
+    icon: 'M5 20V6.8A2.8 2.8 0 0 1 7.8 4h8.4A2.8 2.8 0 0 1 19 6.8V20 M3.5 20h17 M9 8h6 M9 13.5h5',
+    title: 'Тасаг харах',
+    desc: 'Бүх тасаг, мэргэжлийг үзнэ.'
+  },
+  {
+    icon: 'M4 11.5 12 5l8 6.5 M6.5 10.5V19h11v-8.5 M9.4 19v-4.8h5.2V19',
+    title: 'Хяналтын самбар',
+    desc: 'Захиалга, статистикаа нэг дороос харна.'
+  }
+];
+
+function MenuIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.menuIconSvg}>
+      <path d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.menuIconSvg}>
+      <path d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.checkIcon}>
+      <circle cx="12" cy="12" r="9.5" />
+      <path d="m8 12.3 2.6 2.6L16.5 9" />
+    </svg>
+  );
+}
+
+const DEPARTMENTS = [
+  { img: '/departments/dept-internal.jpg', title: 'Дотрын тасаг', desc: 'Ерөнхий үзлэг, дотоод өвчний оношилгоо.' },
+  { img: '/departments/dept-cardiology.jpg', title: 'Зүрх судас', desc: 'Зүрх, судасны эрүүл мэндийн үзлэг.' },
+  { img: '/departments/dept-surgery.jpg', title: 'Мэс заслын тасаг', desc: 'Мэс заслын өмнөх болон дараах тусламж.' },
+  { img: '/departments/dept-eye.jpg', title: 'Нүдний тасаг', desc: 'Нүдний үзлэг, харааны шинжилгээ.' },
+  { img: '/departments/dept-pediatrics.jpg', title: 'Хүүхдийн тасаг', desc: 'Хүүхдийн эрүүл мэндийн тусгай үзлэг.' }
+];
+
+const STATS = [
+  {
+    icon: 'M5 20V6.8A2.8 2.8 0 0 1 7.8 4h8.4A2.8 2.8 0 0 1 19 6.8V20 M3.5 20h17 M9 8h6 M9 13.5h5',
+    value: '5+',
+    label: 'Тасаг'
+  },
+  {
+    icon: 'M9 3v4a2 2 0 0 0 4 0V3 M7 3h1.5 M13.5 3H15 M11 11v2.2a4 4 0 0 0 8 0v-.7 M19.5 12a1.35 1.35 0 1 0 0-2.7 1.35 1.35 0 0 0 0 2.7Z M5 21v-3.4A4.6 4.6 0 0 1 9.6 13H10',
+    value: '10+',
+    label: 'Мэргэжлийн эмч'
+  },
+  {
+    icon: 'M4 13v-1a8 8 0 0 1 16 0v1 M3 13h4.2v6H3z M16.8 13H21v6h-4.2z M19.5 19.5v.6a2.9 2.9 0 0 1-2.9 2.9H14',
+    value: '24/7',
+    label: 'Онлайн үйлчилгээ'
+  },
+  {
+    icon: 'M7 4h7.5L19 8.5V20a1.8 1.8 0 0 1-1.8 1.8H7A1.8 1.8 0 0 1 5.2 20V5.8A1.8 1.8 0 0 1 7 4Z M14.3 4v4.7H19 M8.7 12.4h5.6 M8.7 15.5h3.3',
+    value: '100%',
+    label: 'Цахим бүртгэл'
+  }
+];
+
+const WHY_US = [
+  'Цахим бүртгэл, хурдан үйлчилгээ',
+  'Мэргэшсэн эмч нартай шууд холбогдох',
+  'Хаана ч, хэдийд ч онлайнаар хандах',
+  'Хувийн мэдээллийн нууцлал хамгаалагдсан',
+  'Хэрэглэхэд хялбар, ойлгомжтой интерфейс'
+];
+
 const STEPS = [
   { n: '01', title: 'Бүртгүүлэх', desc: 'Имэйл эсвэл Google акаунтаараа хэдхэн секундэд бүртгүүлнэ.' },
   { n: '02', title: 'Эмч, цагаа сонгох', desc: 'Тасгаа сонгоод, чөлөөтэй эмч, боломжит цагаа захиална.' },
   { n: '03', title: 'Онлайн удирдах', desc: 'Захиалга, жор, үзлэгийн бичлэгээ нэг дороос хянана.' }
 ];
 
-export default function Landing({ onGetStarted, onLogin }) {
+export default function Landing({ onGetStarted, onLogin, onLearnMore }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <div className={styles.page}>
       <div className={styles.bg} />
@@ -124,65 +304,112 @@ export default function Landing({ onGetStarted, onLogin }) {
             <div className={styles.navSub}>Эмнэлгийн удирдлагын систем</div>
           </div>
         </div>
-        <button className={styles.navBtn} onClick={onLogin}>Нэвтрэх</button>
+
+        <nav className={styles.navLinks}>
+          <a href="#how-it-works">Хэрхэн ажилладаг</a>
+          <a href="#departments">Тасгууд</a>
+          <a href="#why-us">Бидний тухай</a>
+        </nav>
+
+        <div className={styles.navActions}>
+          <button className={styles.navLoginBtn} onClick={onLogin}>Нэвтрэх</button>
+          <button className={styles.navBtn} onClick={onGetStarted}>Бүртгүүлэх</button>
+        </div>
+
+        <button
+          type="button"
+          className={styles.menuToggle}
+          aria-label={menuOpen ? 'Цэс хаах' : 'Цэс нээх'}
+          onClick={() => setMenuOpen(v => !v)}
+        >
+          {menuOpen ? <CloseIcon /> : <MenuIcon />}
+        </button>
       </header>
+
+      {menuOpen && (
+        <div className={styles.mobileMenu}>
+          <a href="#how-it-works" onClick={closeMenu}>Хэрхэн ажилладаг</a>
+          <a href="#departments" onClick={closeMenu}>Тасгууд</a>
+          <a href="#why-us" onClick={closeMenu}>Бидний тухай</a>
+          <div className={styles.mobileMenuActions}>
+            <button className={styles.navLoginBtn} onClick={() => { closeMenu(); onLogin(); }}>Нэвтрэх</button>
+            <button className={styles.navBtn} onClick={() => { closeMenu(); onGetStarted(); }}>Бүртгүүлэх</button>
+          </div>
+        </div>
+      )}
 
       <main>
         <section className={styles.hero}>
+          <div className={styles.heroBg}>
+            <img src="/hero/hero-bg.jpg" alt="" className={styles.heroBgImg} />
+            <div className={styles.heroBgScrim} />
+          </div>
+
           <div className={`${styles.heroText} fade-up`}>
+            <p className={styles.eyebrow}>ТАНЫ ЭРҮҮЛ МЭНД, БИДНИЙ ТЭРГҮҮН ЗОРИЛГО</p>
             <h1 className={styles.heroTitle}>
               <AnimatedWords words={HERO_LINE_1} />
               <br />
               <AnimatedWords words={HERO_LINE_2} startIndex={HERO_LINE_1.length} />
             </h1>
-            <p className={styles.heroDesc}>
-              МедСистем нь өвчтөн, эмч, админ гурвыг нэг дороос холбож, цаг захиалга,
-              эмчийн бичлэг, жор бичих зэрэг үйл ажиллагааг онлайнаар хялбар, хурдан болгодог.
-            </p>
             <div className={styles.heroActions}>
-              <button className={styles.primaryBtn} onClick={onGetStarted}>Эхлэх — Бүртгүүлэх</button>
-              <button className={styles.secondaryBtn} onClick={onLogin}>Надад бүртгэл бий</button>
+              <button className={styles.primaryBtn} onClick={onGetStarted}>
+                Эхлэх — Бүртгүүлэх <ArrowRightIcon />
+              </button>
+              <button className={styles.secondaryBtn} onClick={onLogin}>
+                <DoctorSearchIcon /> Надад бүртгэл бий
+              </button>
+            </div>
+            <div className={styles.trustRow}>
+              <div className={styles.avatarStack}>
+                {HERO_AVATARS.map(src => (
+                  <img key={src} src={src} alt="" className={styles.avatarStackItem} />
+                ))}
+              </div>
+              <div className={styles.trustText}>
+                <strong>10,000+</strong>
+                <span>хэрэглэгч итгэдэг</span>
+              </div>
             </div>
           </div>
 
           <div className={`${styles.heroVisual} fade-up`}>
-            <div className={styles.heroCard}>
-              <div className={styles.heroCardRow}>
-                <span className={styles.heroCardDot} />
-                <span>Цаг захиалга баталгаажлаа</span>
-              </div>
-              <div className={styles.heroStat}>
-                <div>
-                  <div className={styles.heroStatLabel}>Тасаг</div>
-                  <div className={styles.heroStatValue}>Зүрх судас</div>
+            <div className={styles.miniCardCol}>
+              {HERO_MINI_CARDS.map(card => (
+                <div className={styles.miniCard} key={card.desc}>
+                  <span className={styles.miniCardIcon}>{card.icon}</span>
+                  <div>
+                    <div className={styles.miniCardTitle}>{card.title}</div>
+                    <div className={styles.miniCardDesc}>{card.desc}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className={styles.heroStatLabel}>Өрөө</div>
-                  <div className={styles.heroStatValue}>102</div>
-                </div>
-              </div>
-              <div className={styles.heroCardFooter}>Онлайнаар хэдхэн товшилтоор</div>
+              ))}
             </div>
-            <div className={styles.heroCardGhost} />
           </div>
         </section>
 
-        <section className={styles.features}>
-          <Reveal><h2 className={styles.sectionTitle}>Систем юу санал болгодог вэ?</h2></Reveal>
-          <div className={styles.featureGrid}>
-            {FEATURES.map((f, i) => (
-              <Reveal key={f.title} delay={i * 70} className={styles.featureGridItem}>
-                <div className={styles.featureCard}>
-                  <div className={styles.featureIconWrap}><FeatureIcon d={f.icon} /></div>
-                  <h3 className={styles.featureTitle}>{f.title}</h3>
-                  <p className={styles.featureDesc}>{f.desc}</p>
-                </div>
-              </Reveal>
-            ))}
+        <section className={styles.quickHelp}>
+          <div className={styles.helpCard}>
+            <h2 className={styles.helpTitle}>Танд юугаар туслах вэ?</h2>
+            <div className={styles.helpGrid}>
+              {QUICK_LINKS.map(item => (
+                <button
+                  key={item.title}
+                  type="button"
+                  className={styles.helpItem}
+                  onClick={onGetStarted}
+                >
+                  <span className={styles.helpIconWrap}><FeatureIcon d={item.icon} /></span>
+                  <span className={styles.helpItemTitle}>{item.title}</span>
+                  <span className={styles.helpItemDesc}>{item.desc}</span>
+                  <span className={styles.helpArrow}>→</span>
+                </button>
+              ))}
+            </div>
           </div>
         </section>
 
-        <section className={styles.steps}>
+        <section id="how-it-works" className={styles.steps}>
           <Reveal><h2 className={styles.sectionTitle}>Хэрхэн ажилладаг вэ?</h2></Reveal>
           <div className={styles.stepsGrid}>
             {STEPS.map((s, i) => (
@@ -197,30 +424,131 @@ export default function Landing({ onGetStarted, onLogin }) {
           </div>
         </section>
 
-        <section className={styles.cta}>
-          <Reveal>
-            <div className={styles.ctaCard}>
-              <h2 className={styles.ctaTitle}>Одоо эхлэхэд бэлэн үү?</h2>
-              <p className={styles.ctaDesc}>Хэдхэн секундэд бүртгүүлээд, эмнэлгийн үйлчилгээгээ онлайнаар удирдаж эхлээрэй.</p>
-              <button className={styles.primaryBtn} onClick={onGetStarted}>Үнэгүй бүртгүүлэх</button>
+        <section id="departments" className={styles.departments}>
+          <Reveal><h2 className={styles.sectionTitle}>Манай тасгууд</h2></Reveal>
+          <Reveal><p className={styles.sectionSub}>Танд тохирсон мэргэжлийн тасаг, эмчийг сонгоорой.</p></Reveal>
+          <div className={styles.deptGrid}>
+            {DEPARTMENTS.map((d, i) => (
+              <Reveal key={d.title} delay={i * 60}>
+                <button type="button" className={styles.deptCard} onClick={onGetStarted}>
+                  <img src={d.img} alt={d.title} className={styles.deptImg} />
+                  <div className={styles.deptBody}>
+                    <div>
+                      <div className={styles.deptTitle}>{d.title}</div>
+                      <div className={styles.deptDesc}>{d.desc}</div>
+                    </div>
+                    <span className={styles.deptArrowBtn}><ArrowRightIcon /></span>
+                  </div>
+                </button>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal className={styles.deptViewAllWrap}>
+            <button type="button" className={styles.secondaryBtn} onClick={onGetStarted}>
+              Бүх тасгуудыг үзэх <ArrowRightIcon />
+            </button>
+          </Reveal>
+        </section>
+
+        <Reveal as="section" className={styles.statsBar}>
+          {STATS.map(s => (
+            <div className={styles.statItem} key={s.label}>
+              <span className={styles.statIcon}><FeatureIcon d={s.icon} /></span>
+              <div>
+                <div className={styles.statValue}>{s.value}</div>
+                <div className={styles.statLabel}>{s.label}</div>
+              </div>
+            </div>
+          ))}
+        </Reveal>
+
+        <section id="why-us" className={styles.whyUs}>
+          <Reveal className={styles.whyUsPhotoCol}>
+            <div className={styles.whyUsPhotoFrame}>
+              <img src="/hero/building.jpg" alt="МедСистем-ийн эмнэлгийн байр" className={styles.whyUsPhoto} />
+              <div className={styles.missionCard}>
+                <div className={styles.missionTitle}>Эрхэм зорилго</div>
+                <p className={styles.missionText}>Эрүүл мэндийн үйлчилгээг чанартай, энэрэнгүй, инновацлаг байдлаар хүргэх.</p>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal className={styles.whyUsTextCol}>
+            <h2 className={styles.whyUsTitle}>Яагаад <span className={styles.whyUsAccent}>МедСистем</span>-ийг сонгох вэ?</h2>
+            <p className={styles.whyUsDesc}>Инновац, мэргэжлийн ур чадвар, халамжийг нэгтгэн эрүүл мэндийн шилдэг үйлчилгээг үзүүлдэг.</p>
+            <ul className={styles.whyUsList}>
+              {WHY_US.map(item => (
+                <li key={item}><CheckIcon /> {item}</li>
+              ))}
+            </ul>
+            <button type="button" className={styles.secondaryBtn} onClick={onLearnMore}>
+              Дэлгэрэнгүй үзэх <ArrowRightIcon />
+            </button>
+          </Reveal>
+
+          <Reveal className={styles.emergencyCol}>
+            <div className={styles.emergencyCard}>
+              <div className={styles.emergencyIconWrap}><HeadsetIcon /></div>
+              <div className={styles.emergencyTitle}>Яаралтай тусламж хэрэгтэй юу?</div>
+              <p className={styles.emergencyText}>Бид 24/7 онлайн бэлэн байдаг. Таны эрүүл мэнд бидний тэргүүн зорилго.</p>
+              <a href="tel:+97670112233" className={styles.emergencyPhone}>
+                <span className={styles.emergencyPhoneIcon}>☎</span> 7011-2233
+              </a>
             </div>
           </Reveal>
         </section>
+
+        <Reveal as="section" className={styles.bookBanner}>
+          <div className={styles.banIconWrap}><CalendarPlusIcon /></div>
+          <div className={styles.banText}>
+            <div className={styles.banTitle}>Таны эрүүл мэнд бидний тэргүүн зорилго</div>
+            <div className={styles.banDesc}>Та болон таны гэр бүлийн эрүүл мэндийг найдвартай үйлчилгээгээр хамгаалъя.</div>
+          </div>
+          <button type="button" className={styles.banBtn} onClick={onGetStarted}>
+            Одоо цаг захиалах <ArrowRightIcon />
+          </button>
+          <span className={styles.banBadge}><PersonPlusIcon /></span>
+        </Reveal>
+
       </main>
 
       <footer className={styles.footer}>
-        <div className={styles.footerCol}>
-          <div className={styles.navLogo}>
-            <div className={styles.logoIcon}><LogoMark /></div>
-            <div className={styles.navTitle}>МедСистем</div>
+        <div className={styles.footerTop}>
+          <div className={styles.footerCol}>
+            <div className={styles.navLogo}>
+              <div className={styles.logoIcon}><LogoMark /></div>
+              <div className={styles.navTitle}>МедСистем</div>
+            </div>
+            <p className={styles.footerDesc}>Эмнэлгийн удирдлагын систем — цаг захиалга, жор, үзлэгийн бичлэгийг нэг дороос.</p>
           </div>
-          <p className={styles.footerDesc}>Эмнэлгийн удирдлагын систем.</p>
+
+          <div className={styles.footerCol}>
+            <div className={styles.footerHeading}>Түргэн холбоос</div>
+            <a href="#how-it-works" className={styles.footerLink}>Хэрхэн ажилладаг</a>
+            <a href="#departments" className={styles.footerLink}>Тасгууд</a>
+            <a href="#why-us" className={styles.footerLink}>Бидний тухай</a>
+            <button type="button" className={styles.footerLinkBtn} onClick={onLearnMore}>Дэлгэрэнгүй</button>
+          </div>
+
+          <div className={styles.footerCol}>
+            <div className={styles.footerHeading}>Холбоо барих</div>
+            <div className={styles.footerContactItem}>
+              <span className={styles.footerContactIcon}><PinIcon /></span>
+              <span className={styles.footerItem}>Энхтайвны өргөн чөлөө, Шангри-Ла молл 1010</span>
+            </div>
+            <div className={styles.footerContactItem}>
+              <span className={styles.footerContactIcon}><PhoneIcon /></span>
+              <a href="tel:+97670112233" className={styles.footerItem}>7011-2233</a>
+            </div>
+            <div className={styles.footerContactItem}>
+              <span className={styles.footerContactIcon}><MailIcon /></span>
+              <a href="mailto:Suld@hospital.mn" className={styles.footerItem}>Suld@hospital.mn</a>
+            </div>
+          </div>
         </div>
-        <div className={styles.footerCol}>
-          <div className={styles.footerHeading}>Холбоо барих</div>
-          <div className={styles.footerItem}><span className={styles.footerLabel}>Хаяг:</span> Энхтайвны өргөн чөлөө, Шангри-Ла молл 1010</div>
-          <div className={styles.footerItem}><span className={styles.footerLabel}>Утас:</span> 7011-2233</div>
-          <div className={styles.footerItem}><span className={styles.footerLabel}>Имэйл:</span> Suld@hospital.mn</div>
+
+        <div className={styles.footerBottom}>
+          <span>© {new Date().getFullYear()} МедСистем. Бүх эрх хуулиар хамгаалагдсан.</span>
         </div>
       </footer>
     </div>

@@ -42,6 +42,10 @@ export default function Auth({ onBack }) {
 
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }));
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // OAuth callback — URL-ээс token авна
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
